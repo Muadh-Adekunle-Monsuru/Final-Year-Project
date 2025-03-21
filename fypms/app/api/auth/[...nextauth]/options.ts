@@ -44,4 +44,17 @@ export const options: NextAuthOptions = {
 			},
 		}),
 	],
+	pages: {
+		signIn: '/auth/signin', // Custom login page
+	},
+	callbacks: {
+		jwt({ token, user }) {
+			if (user) token.role = user.role;
+			return token;
+		},
+		session({ session, token }) {
+			session.user.role = token.role;
+			return session;
+		},
+	},
 };

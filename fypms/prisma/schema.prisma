@@ -14,17 +14,20 @@ datasource db {
 }
 
 model User {
-  id          String  @id @default(auto()) @map("_id") @db.ObjectId
-  name String
+  id             String   @id @default(auto()) @map("_id") @db.ObjectId
+  name           String
   passwordHashed String
-  firstName String?
-  lastName String?
-  role Role @default(STUDENT) 
-  email String?
+  firstName      String?
+  lastName       String?
+  role           Role     @default(STUDENT)
+  email          String?
+  CGPA           String?
+  supervisor     String?
+  supervisees    String[]
 }
 
 enum Role {
-  STUDENT 
+  STUDENT
   COORDINATOR
   SUPERVISOR
 }

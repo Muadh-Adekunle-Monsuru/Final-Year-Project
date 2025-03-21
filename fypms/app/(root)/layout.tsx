@@ -1,13 +1,22 @@
 'use client';
 import { SessionProvider } from 'next-auth/react';
+import { SidebarProvider, SidebarTrigger } from '@/components/ui/sidebar';
+import { AppSidebar } from '@/components/app-sidebar';
+
 export default function Layout({
 	children,
 }: Readonly<{
 	children: React.ReactNode;
 }>) {
 	return (
-		<main>
-			<SessionProvider>{children}</SessionProvider>
-		</main>
+		<SidebarProvider>
+			<AppSidebar />
+			<main className='w-full'>
+				<SessionProvider>
+					<SidebarTrigger />
+					{children}
+				</SessionProvider>
+			</main>
+		</SidebarProvider>
 	);
 }
