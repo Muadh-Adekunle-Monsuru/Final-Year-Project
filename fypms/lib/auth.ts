@@ -94,5 +94,26 @@ export async function allocateSupervisors() {
 			data: { supervisor: supervisor.id },
 		});
 	});
-	return Promise.all(allocatedStudents);
+	//group and return students with their supervisors
+
+	const groupsObj = {};
+	const groups = (await Promise.all(allocatedStudents)).map(
+		(student, index) => {
+			if (!groupsObj[student.supervisor]) {
+				groupsObj[student.supervisor] = [];
+			}
+			groupsObj[student.supervisor].push(students[index]);
+		}
+	);
+	// console.log(groupsObj);
+	// return Promise.all(allocatedStudents);
+	return groupsObj;
+}
+
+export async function getSupervisorName(id: string) {
+	const supervisor = await prisma.user.findFirst({
+		where: { id },
+		select: { firstName: true, lastName: true },
+	});
+	return supervisor;
 }
