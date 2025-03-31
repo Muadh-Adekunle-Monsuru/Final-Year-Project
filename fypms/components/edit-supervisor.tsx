@@ -12,34 +12,31 @@ import {
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { User } from '@prisma/client';
-import { Student } from './student-columns';
+import { Supervisor } from './supervisor-columns';
 import { useState } from 'react';
-import { editStudent } from '@/lib/auth';
+import { editStudent, editSupervisor } from '@/lib/auth';
 import { useRouter } from 'next/navigation';
 
-export function EditStudent({ student }: { student: Student }) {
+export function EditSupervisor({ supervisor }: { supervisor: Supervisor }) {
 	const router = useRouter();
-	const [matricNo, setMatricNo] = useState(student.name);
-	const [firstName, setFirstName] = useState(student.firstName);
-	const [lastName, setLastName] = useState(student.lastName);
-	const [CGPA, setCGPA] = useState(student.CGPA);
+	const [staffId, setStaffId] = useState(supervisor.name);
+	const [firstName, setFirstName] = useState(supervisor.firstName);
+	const [lastName, setLastName] = useState(supervisor.lastName);
 	const [open, setOpen] = useState(false);
 
 	const handleSubmit = async (event) => {
 		// Handle form submission logic here, e.g., send data to the server
 		event.preventDefault(); // Prevent the default form submission behavior
 		console.log('Form submitted with values:', {
-			matricNo,
+			staffId,
 			firstName,
 			lastName,
-			CGPA,
 		});
-		await editStudent({
-			id: student.id,
-			matricNo,
+		await editSupervisor({
+			staffId,
 			firstName,
 			lastName,
-			CGPA,
+			id: supervisor.id,
 		});
 		router.refresh();
 		setOpen(false);
@@ -61,8 +58,8 @@ export function EditStudent({ student }: { student: Student }) {
 						</Label>
 						<Input
 							id='name'
-							value={matricNo}
-							onChange={(e) => setMatricNo(e.target.value)}
+							value={staffId}
+							onChange={(e) => setStaffId(e.target.value)}
 							className='col-span-3'
 						/>
 					</div>
@@ -88,17 +85,7 @@ export function EditStudent({ student }: { student: Student }) {
 							className='col-span-3'
 						/>
 					</div>
-					<div className='grid grid-cols-4 items-center gap-4'>
-						<Label htmlFor='cgpa' className='text-right'>
-							CGPA
-						</Label>
-						<Input
-							id='cgpa'
-							value={CGPA}
-							onChange={(e) => setCGPA(e.target.value)}
-							className='col-span-3'
-						/>
-					</div>
+
 					<Button type='submit'>Save changes</Button>
 				</form>
 				<DialogFooter></DialogFooter>

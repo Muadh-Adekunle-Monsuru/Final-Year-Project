@@ -13,18 +13,18 @@ import {
 } from '@/components/ui/dropdown-menu';
 import { deleteUser } from '@/lib/auth';
 import { redirect } from 'next/navigation';
+import { EditSupervisor } from './edit-supervisor';
 // This type is used to define the shape of our data.
 // You can use a Zod schema here if you want.
-export type Student = {
+export type Supervisor = {
 	id: string;
 	name: string;
 	firstName: string;
 	lastName: string;
-	CGPA: string;
 	supervisees?: string[];
 };
 
-export const supervisorColumns: ColumnDef<Student>[] = [
+export const supervisorColumns: ColumnDef<Supervisor>[] = [
 	{
 		accessorKey: 'name',
 		header: ({ column }) => {
@@ -101,8 +101,9 @@ export const supervisorColumns: ColumnDef<Student>[] = [
 						</Button>
 					</DropdownMenuTrigger>
 					<DropdownMenuContent align='end'>
-						<DropdownMenuLabel>Actions</DropdownMenuLabel>
-						<DropdownMenuItem>Edit</DropdownMenuItem>
+						<DropdownMenuLabel>
+							<EditSupervisor supervisor={user} />
+						</DropdownMenuLabel>
 						<DropdownMenuItem onClick={removeUser}>Delete</DropdownMenuItem>
 					</DropdownMenuContent>
 				</DropdownMenu>

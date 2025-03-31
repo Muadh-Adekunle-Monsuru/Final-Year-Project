@@ -1,5 +1,5 @@
 'use client';
-import { createStudent } from '@/lib/auth';
+import { createSupervisor } from '@/lib/auth';
 import { Loader2 } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import Papa from 'papaparse';
@@ -10,7 +10,7 @@ import { Label } from './ui/label';
 const acceptableFileType =
 	'application/vnd.ms-excel, application/csv, text/csv, text/plain, text/x-csv, text/comma-separated-values, ';
 
-export default function UploadStudentCsv() {
+export default function UploadSupervisorCsv() {
 	const router = useRouter();
 	const [creating, setCreating] = useState(false);
 	const onFileChange = (event: ChangeEvent<HTMLInputElement>) => {
@@ -25,13 +25,13 @@ export default function UploadStudentCsv() {
 				setCreating(true);
 
 				Promise.all(
-					results.data.map((student) => createStudent(student as any))
+					results.data.map((supervisor) => createSupervisor(supervisor as any))
 				)
 					.then(() => {
-						console.log('All students created successfully');
+						console.log('All supervisors created successfully');
 					})
 					.catch((error) => {
-						console.error('Error creating students:', error);
+						console.error('Error creating supervisors :', error);
 					})
 					.finally(() => {
 						router.refresh();
@@ -46,7 +46,7 @@ export default function UploadStudentCsv() {
 				<div className='flex flex-col items-center justify-center'>
 					<Loader2 className='animate-spin' />
 					<p className='text-center text-sm'>
-						Creating students... Please wait.
+						Creating supervisor... Please wait.
 					</p>
 				</div>
 			) : (
@@ -61,7 +61,7 @@ export default function UploadStudentCsv() {
 						accept={acceptableFileType}
 					/>
 					<p className='text-xs italic text-gray-500 mt-1'>
-						Columns names: matricNo, firstName, lastName, CGPA
+						Columns names: staffId, firstName, lastName
 					</p>
 				</div>
 			)}

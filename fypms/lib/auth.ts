@@ -55,6 +55,7 @@ export async function createSupervisor({
 	lastName?: string;
 	staffId?: string;
 }) {
+	if (!staffId || !firstName || !lastName) return;
 	const passwordHashed = await hashPassword(lastName.toLocaleLowerCase());
 	const user = await prisma.user.create({
 		data: {
@@ -150,4 +151,40 @@ export async function clearStudentTable() {
 		where: { role: 'STUDENT' },
 	});
 	return true;
+}
+
+export async function clearSupervisorTable() {
+	await prisma.user.deleteMany({
+		where: { role: 'SUPERVISOR' },
+	});
+	return true;
+}
+
+export async function editStudent(values: any) {
+	const { matricNo, firstName, lastName, CGPA, id } = values;
+	if (!matricNo || !firstName || !lastName || !CGPA) return;
+	const user = await prisma.user.update({
+		where: { id },
+		data: {
+			name: matricNo,
+			firstName,
+			lastName,
+			CGPA,
+		},
+	});
+	return user;
+}
+
+export async function editSupervisor(values: any) {
+	const { staffId, firstName, lastName, id } = values;
+	if (!staffId || !firstName || !lastName) return;
+	const user = await prisma.user.update({
+		where: { id },
+		data: {
+			name: staffId,
+			firstName,
+			lastName,
+		},
+	});
+	return user;
 }

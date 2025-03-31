@@ -20,7 +20,8 @@ import {
 } from '@/components/ui/table';
 import { Button } from '@/components/ui/button';
 import { useState } from 'react';
-import { clearStudentTable } from '@/lib/auth';
+import { clearStudentTable, clearSupervisorTable } from '@/lib/auth';
+import { useRouter } from 'next/navigation';
 
 interface DataTableProps<TData, TValue> {
 	columns: ColumnDef<TData, TValue>[];
@@ -31,6 +32,7 @@ export function SupervisorDataTable<TData, TValue>({
 	columns,
 	data,
 }: DataTableProps<TData, TValue>) {
+	const router = useRouter();
 	const [sorting, setSorting] = useState<SortingState>([]);
 	const table = useReactTable({
 		data,
@@ -97,6 +99,17 @@ export function SupervisorDataTable<TData, TValue>({
 				</Table>
 			</div>
 			<div className='flex items-center justify-end space-x-2 py-4'>
+				<Button
+					variant='ghost'
+					size='sm'
+					onClick={() => {
+						// clear();
+						clearSupervisorTable();
+						router.refresh();
+					}}
+				>
+					Clear Table
+				</Button>{' '}
 				<Button
 					variant='outline'
 					size='sm'
