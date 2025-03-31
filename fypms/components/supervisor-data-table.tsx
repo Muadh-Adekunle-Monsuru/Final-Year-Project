@@ -20,6 +20,7 @@ import {
 } from '@/components/ui/table';
 import { Button } from '@/components/ui/button';
 import { useState } from 'react';
+import { clearStudentTable } from '@/lib/auth';
 
 interface DataTableProps<TData, TValue> {
 	columns: ColumnDef<TData, TValue>[];
@@ -88,7 +89,7 @@ export function SupervisorDataTable<TData, TValue>({
 									colSpan={columns.length}
 									className='h-24 text-center'
 								>
-									No results.
+									No supervisors.
 								</TableCell>
 							</TableRow>
 						)}

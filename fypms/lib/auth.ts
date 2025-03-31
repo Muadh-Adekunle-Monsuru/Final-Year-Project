@@ -31,6 +31,8 @@ export async function createStudent({
 	matricNo?: string;
 	CGPA?: string;
 }) {
+	if (!matricNo || !firstName || !lastName || !CGPA) return;
+
 	const passwordHashed = await hashPassword(lastName.toLocaleLowerCase());
 	const user = await prisma.user.create({
 		data: {
@@ -89,6 +91,7 @@ export async function allocateSupervisors() {
 	const supervisors = await getSupervisors();
 	const allocatedStudents = students.map((student, index) => {
 		const supervisor = supervisors[index % supervisors.length];
+
 		return prisma.user.update({
 			where: { id: student.id },
 			data: { supervisor: supervisor.id },
@@ -105,8 +108,16 @@ export async function allocateSupervisors() {
 			groupsObj[student.supervisor].push(students[index]);
 		}
 	);
-	// console.log(groupsObj);
-	// return Promise.all(allocatedStudents);
+
+	for (const key of Object.keys(groupsObj)) {
+		const studentsId = groupsObj[key].map((student) => student.id);
+
+		await prisma.user.update({
+			where: { id: key },
+			data: { supervisees: [...studentsId] },
+		});
+	}
+
 	return groupsObj;
 }
 
@@ -116,4 +127,27 @@ export async function getSupervisorName(id: string) {
 		select: { firstName: true, lastName: true },
 	});
 	return supervisor;
+}
+
+export async function deleteUser(id: string) {
+	return prisma.user.delete({ where: { id } });
+}
+
+export async function createBulkStudents(students: any) {
+	const bulkStudents = await prisma.user.createMany({
+		data: students,
+	});
+	return bulkStudents;
+}
+export async function createBulkSupervisors(supervisors: any) {
+	const bulkSupervisors = await prisma.user.createMany({
+		data: supervisors,
+	});
+	return bulkSupervisors;
+}
+export async function clearStudentTable() {
+	await prisma.user.deleteMany({
+		where: { role: 'STUDENT' },
+	});
+	return true;
 }

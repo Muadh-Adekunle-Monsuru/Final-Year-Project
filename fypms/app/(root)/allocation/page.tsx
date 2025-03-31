@@ -17,7 +17,6 @@ export default async function page() {
 			<p className='text-lg'>
 				This is where students are allocated a supervisor.
 			</p>
-			{/* <Allocation students={students} /> */}
 			<GroupedAllocation groups={students} />
 		</div>
 	);

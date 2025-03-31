@@ -7,7 +7,12 @@ export function AppSidebar() {
 	return (
 		<Sidebar collapsible='icon'>
 			<SidebarHeader>
-				<h2 className='font-bold p-1 text-2xl select-none'>FYPMS</h2>
+				<h2
+					className='font-bold p-1 text-lg flex-wrap
+				 select-none'
+				>
+					FYPMS
+				</h2>
 			</SidebarHeader>
 			<CoordinatorSidebar />
 			<SidebarFooter>

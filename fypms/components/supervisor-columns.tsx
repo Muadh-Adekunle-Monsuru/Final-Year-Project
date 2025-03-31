@@ -11,6 +11,8 @@ import {
 	DropdownMenuLabel,
 	DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
+import { deleteUser } from '@/lib/auth';
+import { redirect } from 'next/navigation';
 // This type is used to define the shape of our data.
 // You can use a Zod schema here if you want.
 export type Student = {
@@ -85,8 +87,11 @@ export const supervisorColumns: ColumnDef<Student>[] = [
 	{
 		id: 'actions',
 		cell: ({ row }) => {
-			const payment = row.original;
-
+			const user = row.original;
+			const removeUser = async () => {
+				await deleteUser(user.id);
+				redirect('#');
+			};
 			return (
 				<DropdownMenu>
 					<DropdownMenuTrigger asChild>
@@ -98,7 +103,7 @@ export const supervisorColumns: ColumnDef<Student>[] = [
 					<DropdownMenuContent align='end'>
 						<DropdownMenuLabel>Actions</DropdownMenuLabel>
 						<DropdownMenuItem>Edit</DropdownMenuItem>
-						<DropdownMenuItem>Delete</DropdownMenuItem>
+						<DropdownMenuItem onClick={removeUser}>Delete</DropdownMenuItem>
 					</DropdownMenuContent>
 				</DropdownMenu>
 			);
