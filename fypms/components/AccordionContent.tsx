@@ -1,40 +1,28 @@
 'use client';
-import { getSupervisorName, saveAllocation } from '@/lib/auth';
-import { User } from '@prisma/client';
-import React, { useState, useEffect, useRef } from 'react';
-import { Input } from './ui/input';
+
+import { Printer } from 'lucide-react';
 import { Button } from './ui/button';
+import { Switch } from './ui/switch';
+import { useRef, useState } from 'react';
+import { useReactToPrint } from 'react-to-print';
 
 export default function AccordionAllocation({ groups, groupNames }) {
-	// const [groupNames, setGroupNames] = useState({});
-	const [allocationName, setAllocationName] = useState('');
-	// useEffect(() => {
-	// 	const fetchNames = async () => {
-	// 		const names = {};
-	// 		for (const key of Object.keys(groups)) {
-	// 			const name = await getSupervisorName(key);
-	// 			if (name) {
-	// 				names[key] = `${name.firstName} ${name.lastName}`;
-	// 			}
-	// 		}
-	// 		setGroupNames(names);
-	// 		// console.log(names);
-	// 	};
+	const contentRef = useRef<HTMLDivElement>(null);
+	const reactToPrintFn = useReactToPrint({ contentRef });
 
-	// 	fetchNames();
-	// }, [groups]);
-
-	// const saveAllocationToDatabase = async () => {
-	// 	const res = await saveAllocation({
-	// 		allocationName,
-	// 		groups: JSON.stringify(groups),
-	// 		supervisorNames: JSON.stringify(groupNames),
-	// 	});
-	// 	setAllocationName('');
-	// };
-
+	const [showCGPA, setShowCGPA] = useState(false);
 	return (
-		<div className='border rounded-2xl grid divide-y-2 mt-5'>
+		<div className='border rounded-2xl grid divide-y-2 mt-5' ref={contentRef}>
+			<div className='flex items-center justify-center p-5 gap-6'>
+				<div className=' flex items-center gap-3'>
+					<Switch checked={showCGPA} onCheckedChange={(e) => setShowCGPA(e)} />
+					<span>Show CGPA</span>
+				</div>
+				<Button onClick={() => reactToPrintFn()}>
+					<Printer />
+					Print
+				</Button>
+			</div>
 			{Object.keys(groups).map((key) => (
 				<div
 					key={key}
@@ -54,7 +42,7 @@ export default function AccordionAllocation({ groups, groupNames }) {
 								<h2>
 									{student.firstName} {student.lastName}
 								</h2>
-								<p>{student.CGPA}</p>
+								<p>{showCGPA && student.CGPA}</p>
 							</div>
 						))}
 					</div>

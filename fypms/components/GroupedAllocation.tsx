@@ -6,12 +6,18 @@ import { Input } from './ui/input';
 import { Button } from './ui/button';
 import { useRouter } from 'next/navigation';
 import { Switch } from '@/components/ui/switch';
+import { useReactToPrint } from 'react-to-print';
+import { Printer } from 'lucide-react';
 
 export default function GroupedAllocation({ groups }) {
+	const contentRef = useRef<HTMLDivElement>(null);
+	const reactToPrintFn = useReactToPrint({ contentRef });
+
 	const router = useRouter();
 	const [groupNames, setGroupNames] = useState({});
 	const [allocationName, setAllocationName] = useState('');
 	const [showCGPA, setShowCGPA] = useState(true);
+
 	useEffect(() => {
 		const fetchNames = async () => {
 			const names = {};
@@ -39,9 +45,9 @@ export default function GroupedAllocation({ groups }) {
 	};
 
 	return (
-		<div className='border rounded-2xl grid divide-y-2 mt-5'>
-			<div className='flex items-center gap-5 justify-center'>
-				<div className='flex items-center gap-3 m-5 max-w-xl'>
+		<div className='border rounded-2xl grid divide-y-2 mt-5' ref={contentRef}>
+			<div className='flex items-center gap-5 justify-between p-5'>
+				<div className='flex items-center gap-3 max-w-xl'>
 					<Input
 						value={allocationName}
 						onChange={(e) => setAllocationName(e.target.value)}
@@ -57,6 +63,10 @@ export default function GroupedAllocation({ groups }) {
 					<Switch checked={showCGPA} onCheckedChange={(e) => setShowCGPA(e)} />
 					<span>Show CGPA</span>
 				</div>
+				<Button onClick={() => reactToPrintFn()}>
+					<Printer />
+					Print
+				</Button>
 			</div>
 			{Object.keys(groups).map((key) => (
 				<div
