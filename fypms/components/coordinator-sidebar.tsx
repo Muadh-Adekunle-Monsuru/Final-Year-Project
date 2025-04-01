@@ -21,6 +21,7 @@ import {
 	UserRound,
 	UserPen,
 	FileStack,
+	Calendar1,
 } from 'lucide-react';
 import Link from 'next/link';
 
@@ -49,6 +50,11 @@ const items = [
 		title: 'Past Projects',
 		url: '#',
 		icon: FileStack,
+	},
+	{
+		title: 'Deadlines',
+		url: '#',
+		icon: Calendar1,
 	},
 	{
 		title: 'Settings',

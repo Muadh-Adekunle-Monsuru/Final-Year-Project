@@ -8,8 +8,8 @@ export function AppSidebar() {
 		<Sidebar collapsible='icon'>
 			<SidebarHeader>
 				<h2
-					className='font-bold p-1 text-lg flex-wrap
-				 select-none'
+					className='font-bold p-1 text-xl flex-wrap
+				 select-none truncate'
 				>
 					FYPMS
 				</h2>
@@ -17,7 +17,9 @@ export function AppSidebar() {
 			<CoordinatorSidebar />
 			<SidebarFooter>
 				<Button variant='ghost' asChild>
-					<Link href='/api/auth/signout'>Sign Out</Link>
+					<Link href='/api/auth/signout' className='truncate'>
+						Sign Out
+					</Link>
 				</Button>
 			</SidebarFooter>
 		</Sidebar>

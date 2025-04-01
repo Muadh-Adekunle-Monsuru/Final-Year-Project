@@ -31,3 +31,10 @@ enum Role {
   COORDINATOR
   SUPERVISOR
 }
+
+model Allocation {
+  id          String   @id @default(auto()) @map("_id") @db.ObjectId
+  name        String
+  groups String
+  supervisorNames String
+}

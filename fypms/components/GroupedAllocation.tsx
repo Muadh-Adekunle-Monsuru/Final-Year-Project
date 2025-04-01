@@ -1,11 +1,17 @@
 'use client';
-import { getSupervisorName } from '@/lib/auth';
+import { getSupervisorName, saveAllocation } from '@/lib/auth';
 import { User } from '@prisma/client';
 import React, { useState, useEffect, useRef } from 'react';
+import { Input } from './ui/input';
+import { Button } from './ui/button';
+import { useRouter } from 'next/navigation';
+import { Switch } from '@/components/ui/switch';
 
 export default function GroupedAllocation({ groups }) {
+	const router = useRouter();
 	const [groupNames, setGroupNames] = useState({});
-
+	const [allocationName, setAllocationName] = useState('');
+	const [showCGPA, setShowCGPA] = useState(true);
 	useEffect(() => {
 		const fetchNames = async () => {
 			const names = {};
@@ -16,13 +22,42 @@ export default function GroupedAllocation({ groups }) {
 				}
 			}
 			setGroupNames(names);
+			// console.log(names);
 		};
 
 		fetchNames();
 	}, [groups]);
 
+	const saveAllocationToDatabase = async () => {
+		const res = await saveAllocation({
+			allocationName,
+			groups: JSON.stringify(groups),
+			supervisorNames: JSON.stringify(groupNames),
+		});
+		setAllocationName('');
+		router.refresh();
+	};
+
 	return (
-		<div className='border rounded-2xl grid divide-y-2'>
+		<div className='border rounded-2xl grid divide-y-2 mt-5'>
+			<div className='flex items-center gap-5 justify-center'>
+				<div className='flex items-center gap-3 m-5 max-w-xl'>
+					<Input
+						value={allocationName}
+						onChange={(e) => setAllocationName(e.target.value)}
+						type='text'
+						id='name'
+						placeholder='24/25 Draft 1'
+					/>
+					<Button onClick={() => saveAllocationToDatabase()}>
+						Save Allocation
+					</Button>
+				</div>
+				<div className=' flex items-center gap-3'>
+					<Switch checked={showCGPA} onCheckedChange={(e) => setShowCGPA(e)} />
+					<span>Show CGPA</span>
+				</div>
+			</div>
 			{Object.keys(groups).map((key) => (
 				<div
 					key={key}
@@ -42,7 +77,7 @@ export default function GroupedAllocation({ groups }) {
 								<h2>
 									{student.firstName} {student.lastName}
 								</h2>
-								<p>{student.CGPA}</p>
+								<p>{showCGPA && student.CGPA}</p>
 							</div>
 						))}
 					</div>

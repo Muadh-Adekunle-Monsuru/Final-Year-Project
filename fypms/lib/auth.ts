@@ -188,3 +188,16 @@ export async function editSupervisor(values: any) {
 	});
 	return user;
 }
+
+export async function saveAllocation(values: any) {
+	const { allocationName, groups, supervisorNames } = values;
+	if (!allocationName || !groups) return;
+	const allocation = await prisma.allocation.create({
+		data: {
+			name: allocationName,
+			groups,
+			supervisorNames,
+		},
+	});
+	return allocation;
+}
