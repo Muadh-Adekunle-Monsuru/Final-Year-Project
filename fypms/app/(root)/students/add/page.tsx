@@ -7,7 +7,7 @@ import { StudentDataTable } from '@/components/student-list-table';
 import { columns } from '@/components/student-columns';
 import UploadStudentCsv from '@/components/upload-student-csv';
 
-export default async function page() {
+export default async function Page() {
 	const session = await getServerSession();
 	const user = await getUserDetails(session?.user.name);
 	if (user.role !== 'COORDINATOR') {
