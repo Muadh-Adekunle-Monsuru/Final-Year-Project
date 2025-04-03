@@ -2,6 +2,7 @@
 import { SessionProvider } from 'next-auth/react';
 import { SidebarProvider, SidebarTrigger } from '@/components/ui/sidebar';
 import { AppSidebar } from '@/components/app-sidebar';
+import TopRightNameIcon from '@/components/TopRightNameIcon';
 
 export default function Layout({
 	children,

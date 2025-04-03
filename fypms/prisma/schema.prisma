@@ -42,10 +42,16 @@ model Allocation {
 model PastProjects {
   id                 String   @id @default(auto()) @map("_id") @db.ObjectId
   serialNumber       String?
-  authors String[]
-  title String
+  authors            String[]
+  title              String
   year               String
   supervisorNames    String?
   projectDescription String?
   projectLink        String?
+}
+
+model Deadlines {
+  id   String   @id @default(auto()) @map("_id") @db.ObjectId
+  name String
+  date String
 }

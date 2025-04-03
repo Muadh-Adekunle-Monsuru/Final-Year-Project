@@ -24,6 +24,7 @@ import {
 	Calendar1,
 } from 'lucide-react';
 import Link from 'next/link';
+import TopRightNameIcon from './TopRightNameIcon';
 
 const items = [
 	{
@@ -53,18 +54,28 @@ const items = [
 	},
 	{
 		title: 'Deadlines',
-		url: '#',
+		url: '/deadlines',
 		icon: Calendar1,
 	},
 	{
 		title: 'Settings',
-		url: '#',
+		url: '/settings',
 		icon: Settings,
 	},
 ];
 export default function CoordinatorSidebar() {
 	return (
 		<SidebarContent>
+			{/* <SidebarGroup>
+				<SidebarGroupLabel>User</SidebarGroupLabel>
+				<SidebarGroupContent>
+					<SidebarMenu>
+						<SidebarMenuItem>
+							<TopRightNameIcon />
+						</SidebarMenuItem>
+					</SidebarMenu>
+				</SidebarGroupContent>
+			</SidebarGroup> */}
 			<SidebarGroup>
 				<SidebarGroupLabel>Application</SidebarGroupLabel>
 				<SidebarGroupContent>

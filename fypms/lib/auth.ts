@@ -213,3 +213,26 @@ export async function getPastQuestions() {
 	const res = await prisma.pastProjects.findMany({});
 	return res;
 }
+
+export async function createEvent({ name, date }) {
+	const res = await prisma.deadlines.create({
+		data: {
+			name,
+			date,
+		},
+	});
+	return res;
+}
+
+export async function getEvents() {
+	const res = await prisma.deadlines.findMany({});
+	return res;
+}
+
+export async function deleteEvent(id: string) {
+	await prisma.deadlines.delete({
+		where: {
+			id,
+		},
+	});
+}
