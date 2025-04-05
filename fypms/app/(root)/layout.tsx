@@ -1,9 +1,7 @@
 'use client';
-import { SessionProvider } from 'next-auth/react';
-import { SidebarProvider, SidebarTrigger } from '@/components/ui/sidebar';
 import { AppSidebar } from '@/components/app-sidebar';
-import TopRightNameIcon from '@/components/TopRightNameIcon';
-
+import { SidebarProvider, SidebarTrigger } from '@/components/ui/sidebar';
+import { SessionProvider } from 'next-auth/react';
 export default function Layout({
 	children,
 }: Readonly<{
@@ -11,13 +9,13 @@ export default function Layout({
 }>) {
 	return (
 		<SidebarProvider>
-			<AppSidebar />
-			<main className='w-full'>
-				<SessionProvider>
+			<SessionProvider>
+				<AppSidebar />
+				<main className='w-full'>
 					<SidebarTrigger />
 					{children}
-				</SessionProvider>
-			</main>
+				</main>
+			</SessionProvider>
 		</SidebarProvider>
 	);
 }

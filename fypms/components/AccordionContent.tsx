@@ -26,7 +26,7 @@ export default function AccordionAllocation({ groups, groupNames }) {
 			{Object.keys(groups).map((key) => (
 				<div
 					key={key}
-					className='p-4 m-2 grid grid-cols-2 items-center justify-between'
+					className='p-4 m-2 grid md:grid-cols-2 items-center justify-between'
 				>
 					<div>
 						<h2 className='text-lg font-medium p-2 border rounded-full w-fit px-9 bg-neutral-50 select-none '>

@@ -45,7 +45,7 @@ export default function AddSupervisorInput() {
 	return (
 		<Form {...form}>
 			<form
-				className='border w-full p-3 my-2 flex items-center justify-center gap-5 rounded-2xl'
+				className='border w-full p-3 my-2 flex flex-col md:flex-row items-center justify-center gap-5 rounded-2xl'
 				onSubmit={form.handleSubmit(onSubmit)}
 			>
 				<FormField

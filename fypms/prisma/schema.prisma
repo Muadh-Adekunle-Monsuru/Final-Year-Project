@@ -51,7 +51,24 @@ model PastProjects {
 }
 
 model Deadlines {
-  id   String   @id @default(auto()) @map("_id") @db.ObjectId
+  id   String @id @default(auto()) @map("_id") @db.ObjectId
   name String
   date String
+}
+
+model Project {
+  id           String @id @default(auto()) @map("_id") @db.ObjectId
+  supervisorId String
+  studentId    String
+  title        Title?
+}
+
+type Title {
+  title                 String
+  titleDescription      String?
+  proposalDocLink       String?
+  approvedBySupervisor  Boolean?
+  approvedByCoordinator Boolean?
+  supervisorComments    String?
+  coordinatorComments   String?
 }

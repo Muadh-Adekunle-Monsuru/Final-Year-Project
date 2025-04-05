@@ -25,21 +25,6 @@ const items = [
 		icon: Home,
 	},
 	{
-		title: 'Students',
-		url: '/students/add',
-		icon: SquareUser,
-	},
-	{
-		title: 'Supervisors',
-		url: '/supervisors/add',
-		icon: UserRound,
-	},
-	{
-		title: 'Allocation',
-		url: '/allocation',
-		icon: UserPen,
-	},
-	{
 		title: 'Past Projects',
 		url: 'past-projects',
 		icon: FileStack,
@@ -49,25 +34,10 @@ const items = [
 		url: '/deadlines',
 		icon: Calendar1,
 	},
-	{
-		title: 'Settings',
-		url: '/settings',
-		icon: Settings,
-	},
 ];
-export default function CoordinatorSidebar() {
+export default function StudentSidebar() {
 	return (
 		<SidebarContent>
-			{/* <SidebarGroup>
-				<SidebarGroupLabel>User</SidebarGroupLabel>
-				<SidebarGroupContent>
-					<SidebarMenu>
-						<SidebarMenuItem>
-							<TopRightNameIcon />
-						</SidebarMenuItem>
-					</SidebarMenu>
-				</SidebarGroupContent>
-			</SidebarGroup> */}
 			<SidebarGroup>
 				<SidebarGroupLabel>Application</SidebarGroupLabel>
 				<SidebarGroupContent>
