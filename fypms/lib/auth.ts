@@ -236,3 +236,33 @@ export async function deleteEvent(id: string) {
 		},
 	});
 }
+
+export async function createTitle({
+	title,
+	description,
+	link,
+	studentId,
+	supervisorId,
+}) {
+	const res = await prisma.project.create({
+		data: {
+			title: {
+				title,
+				titleDescription: description,
+				proposalDocLink: link,
+			},
+			studentId,
+			supervisorId,
+		},
+	});
+}
+
+export async function getTitle({ studentId }) {
+	const res = await prisma.project.findFirst({
+		where: {
+			studentId,
+		},
+	});
+
+	return res;
+}

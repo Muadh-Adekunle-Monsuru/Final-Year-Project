@@ -1,8 +1,7 @@
-import { User } from '@prisma/client';
-import React from 'react';
+import { getSupervisorName, getTitle } from '@/lib/auth';
 import { Student } from '../student-columns';
-import { getSupervisorName } from '@/lib/auth';
-import ProjectTitle from './ProjectTitle';
+import ProjectTitleForm from './ProjectTitleForm';
+import ProjectTitleCard from './ProjectTitleCard';
 
 export default async function StudentDashboard({
 	student,
@@ -10,6 +9,7 @@ export default async function StudentDashboard({
 	student: Student;
 }) {
 	const name = await getSupervisorName(student.supervisor);
+	const project = await getTitle({ studentId: student.id });
 	return (
 		<div>
 			<div>
@@ -19,7 +19,11 @@ export default async function StudentDashboard({
 						? `${name.firstName} ${name.lastName}`
 						: 'yet to be assigned'}
 				</div>
-				<ProjectTitle />
+				{project?.studentId ? (
+					<ProjectTitleCard project={project} />
+				) : (
+					<ProjectTitleForm student={student} />
+				)}
 			</div>
 		</div>
 	);

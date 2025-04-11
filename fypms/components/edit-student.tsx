@@ -11,11 +11,10 @@ import {
 } from '@/components/ui/dialog';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import { User } from '@prisma/client';
-import { Student } from './student-columns';
-import { useState } from 'react';
 import { editStudent } from '@/lib/auth';
 import { useRouter } from 'next/navigation';
+import { useState } from 'react';
+import { Student } from './student-columns';
 
 export function EditStudent({ student }: { student: Student }) {
 	const router = useRouter();
