@@ -1,11 +1,9 @@
 'use client';
-import React from 'react';
-import { Button } from './ui/button';
 import { allocateSupervisors } from '@/lib/auth';
-import { Group, Loader } from 'lucide-react';
+import { Loader } from 'lucide-react';
+import React from 'react';
 import GroupedAllocation from './GroupedAllocation';
-import { Label } from './ui/label';
-import { Input } from './ui/input';
+import { Button } from './ui/button';
 
 export default function NewAllocationComponent() {
 	const [students, setStudents] = React.useState({});

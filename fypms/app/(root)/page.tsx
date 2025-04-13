@@ -4,6 +4,7 @@ import { getServerSession } from 'next-auth';
 import { options } from '../api/auth/[...nextauth]/options';
 import CoordinatorDashboard from '@/components/dashboard/CoordinatorDashboard';
 import StudentDashboard from '@/components/dashboard/StudentDashboard';
+import SupervisorDashboard from '@/components/dashboard/SupervisorDashboard';
 
 export default async function Home() {
 	const session = await getServerSession(options);
@@ -18,6 +19,7 @@ export default async function Home() {
 			</div>
 			{user.role == 'COORDINATOR' && <CoordinatorDashboard />}
 			{user.role == 'STUDENT' && <StudentDashboard student={user} />}
+			{user.role == 'SUPERVISOR' && <SupervisorDashboard supervisor={user} />}
 		</div>
 	);
 }

@@ -1,8 +1,4 @@
 'use client';
-import { allocateSupervisors } from '@/lib/auth';
-import React from 'react';
-import { createSwapy } from 'swapy';
-import { useEffect, useRef } from 'react';
 
 export default function Allocation({ students }) {
 	return (

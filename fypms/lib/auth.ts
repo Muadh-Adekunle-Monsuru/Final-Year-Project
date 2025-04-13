@@ -123,10 +123,10 @@ export async function allocateSupervisors() {
 	return groupsObj;
 }
 
-export async function getSupervisorName(id: string) {
+export async function getName(id: string) {
 	const supervisor = await prisma.user.findFirst({
 		where: { id },
-		select: { firstName: true, lastName: true },
+		select: { firstName: true, lastName: true, name: true },
 	});
 	return supervisor;
 }
@@ -244,6 +244,7 @@ export async function createTitle({
 	studentId,
 	supervisorId,
 }) {
+	if (!title || !description) return;
 	const res = await prisma.project.create({
 		data: {
 			title: {

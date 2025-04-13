@@ -1,13 +1,13 @@
 'use client';
-import { getSupervisorName, saveAllocation } from '@/lib/auth';
-import { User } from '@prisma/client';
-import React, { useState, useEffect, useRef } from 'react';
-import { Input } from './ui/input';
-import { Button } from './ui/button';
-import { useRouter } from 'next/navigation';
 import { Switch } from '@/components/ui/switch';
-import { useReactToPrint } from 'react-to-print';
+import { getName, saveAllocation } from '@/lib/auth';
 import { Printer } from 'lucide-react';
+import { useRouter } from 'next/navigation';
+import { useEffect, useRef, useState } from 'react';
+import { useReactToPrint } from 'react-to-print';
+import { toast } from 'sonner';
+import { Button } from './ui/button';
+import { Input } from './ui/input';
 
 export default function GroupedAllocation({ groups }) {
 	const contentRef = useRef<HTMLDivElement>(null);
@@ -22,7 +22,7 @@ export default function GroupedAllocation({ groups }) {
 		const fetchNames = async () => {
 			const names = {};
 			for (const key of Object.keys(groups)) {
-				const name = await getSupervisorName(key);
+				const name = await getName(key);
 				if (name) {
 					names[key] = `${name.firstName} ${name.lastName}`;
 				}
@@ -42,6 +42,7 @@ export default function GroupedAllocation({ groups }) {
 		});
 		setAllocationName('');
 		router.refresh();
+		toast.success('Allocation saved successfully!');
 	};
 
 	return (

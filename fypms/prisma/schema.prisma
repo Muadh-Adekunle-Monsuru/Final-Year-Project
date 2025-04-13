@@ -15,7 +15,7 @@ datasource db {
 
 model User {
   id             String   @id @default(auto()) @map("_id") @db.ObjectId
-  name           String
+  name           String @unique
   passwordHashed String
   firstName      String?
   lastName       String?

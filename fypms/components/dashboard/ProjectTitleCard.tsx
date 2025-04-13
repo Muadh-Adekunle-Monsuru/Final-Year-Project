@@ -11,7 +11,7 @@ export default function ProjectTitleCard({ project }: { project: Project }) {
 					<p className='font-medium text-lg'>Project Title:</p>
 					<p>{project.title.title}</p>
 					<p className='font-medium mt-2 text-lg'>Project Description:</p>
-					<p className='max-w-xl  text-justify'>
+					<p className='max-w-xl text-justify'>
 						{project.title.titleDescription}
 					</p>
 				</div>
