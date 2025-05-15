@@ -36,7 +36,6 @@ export default function SupervisorDashboard({
 			<div>
 				<p>Number of supervisees: {supervisor.supervisees.length}</p>
 			</div>
-			{/* {JSON.stringify(supeverisees)} */}
 			{supervisor.supervisees.map((student, index) => (
 				<SuperviseeStudentCard student={supeverisees[student]} key={index} />
 			))}

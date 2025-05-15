@@ -2,6 +2,7 @@ import { getName, getTitle } from '@/lib/auth';
 import { Student } from '../student-columns';
 import ProjectTitleCard from './ProjectTitleCard';
 import ProjectTitleForm from './ProjectTitleForm';
+import ProjectTitleDashboard from './ProjectTitleDashboard';
 
 export default async function StudentDashboard({
 	student,
@@ -10,6 +11,7 @@ export default async function StudentDashboard({
 }) {
 	const name = await getName(student.supervisor);
 	const project = await getTitle({ studentId: student.id });
+
 	return (
 		<div>
 			<div>
@@ -19,11 +21,7 @@ export default async function StudentDashboard({
 						? `${name.firstName} ${name.lastName}`
 						: 'yet to be assigned'}
 				</div>
-				{project?.studentId ? (
-					<ProjectTitleCard project={project} />
-				) : (
-					<ProjectTitleForm student={student} />
-				)}
+				<ProjectTitleDashboard project={project} student={student} />
 			</div>
 		</div>
 	);

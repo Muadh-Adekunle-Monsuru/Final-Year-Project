@@ -126,7 +126,7 @@ export async function allocateSupervisors() {
 export async function getName(id: string) {
 	const supervisor = await prisma.user.findFirst({
 		where: { id },
-		select: { firstName: true, lastName: true, name: true },
+		select: { firstName: true, lastName: true, name: true, id: true },
 	});
 	return supervisor;
 }
@@ -265,5 +265,53 @@ export async function getTitle({ studentId }) {
 		},
 	});
 
+	return res;
+}
+
+export async function supervisorApproval(id: string, value: boolean) {
+	const project = await prisma.project.findUnique({ where: { id } });
+
+	const res = await prisma.project.update({
+		where: { id },
+		data: {
+			title: {
+				...project.title,
+				approvedBySupervisor: value,
+			},
+		},
+	});
+	return res;
+}
+
+export async function supervisorComment(id: string, value: string) {
+	const project = await prisma.project.findUnique({ where: { id } });
+
+	const res = await prisma.project.update({
+		where: { id },
+		data: {
+			title: {
+				...project.title,
+				supervisorComments: value,
+			},
+		},
+	});
+	return res;
+}
+
+export async function updateProject(
+	id: string,
+	value: { title: string; titleDescription: string; proposalDocLink: string }
+) {
+	const project = await prisma.project.findUnique({ where: { id } });
+
+	const res = await prisma.project.update({
+		where: { id },
+		data: {
+			title: {
+				...project.title,
+				...value,
+			},
+		},
+	});
 	return res;
 }
