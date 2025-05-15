@@ -10,6 +10,7 @@ import { Button } from '../ui/button';
 import { useRouter } from 'next/navigation';
 import { Label } from '../ui/label';
 import { Textarea } from '../ui/textarea';
+import Loader from '../Loader';
 
 export default function SuperviseeStudentCard({
 	student,
@@ -39,6 +40,7 @@ export default function SuperviseeStudentCard({
 	};
 	return (
 		<div className='rounded-2xl border p-3 my-4 hover:bg-neutral-50 transition-colors '>
+			{approving && <Loader />}
 			<h2 className='text-lg font-medium'>{student?.name}</h2>
 			<h3 className='text-sm text-primary'>{student?.matric}</h3>
 			{student?.project?.id && (

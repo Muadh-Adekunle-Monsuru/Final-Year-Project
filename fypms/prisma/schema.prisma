@@ -61,6 +61,7 @@ model Project {
   supervisorId String
   studentId    String
   title        Title?
+  chapters Chapter[]
 }
 
 type Title {
@@ -71,4 +72,10 @@ type Title {
   approvedByCoordinator Boolean?
   supervisorComments    String?
   coordinatorComments   String?
+}
+
+type Chapter {
+  chapterName String
+  chapterLink     String?
+  supervisorComment String?
 }

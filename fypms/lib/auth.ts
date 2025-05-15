@@ -315,3 +315,35 @@ export async function updateProject(
 	});
 	return res;
 }
+
+export async function uploadChapter(
+	id: string,
+	value: { chapterLink: string }
+) {
+	const project = await prisma.project.findUnique({ where: { id } });
+	const maxChapter = project.chapters.length;
+
+	const res = await prisma.project.update({
+		where: { id },
+		data: {
+			chapters: [
+				...project.chapters,
+				{
+					chapterName: `Chapter ${maxChapter + 1}`,
+					...value,
+				},
+			],
+		},
+	});
+	return res;
+}
+
+export async function getChapters({ studentId }) {
+	const res = await prisma.project.findFirst({
+		where: {
+			studentId,
+		},
+	});
+
+	return res.chapters;
+}

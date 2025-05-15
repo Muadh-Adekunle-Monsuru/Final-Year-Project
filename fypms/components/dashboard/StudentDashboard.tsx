@@ -1,7 +1,6 @@
 import { getName, getTitle } from '@/lib/auth';
 import { Student } from '../student-columns';
-import ProjectTitleCard from './ProjectTitleCard';
-import ProjectTitleForm from './ProjectTitleForm';
+import ProjectChapters from './ProjectChapters';
 import ProjectTitleDashboard from './ProjectTitleDashboard';
 
 export default async function StudentDashboard({
@@ -22,6 +21,7 @@ export default async function StudentDashboard({
 						: 'yet to be assigned'}
 				</div>
 				<ProjectTitleDashboard project={project} student={student} />
+				<ProjectChapters project={project} studentId={student.id} />
 			</div>
 		</div>
 	);

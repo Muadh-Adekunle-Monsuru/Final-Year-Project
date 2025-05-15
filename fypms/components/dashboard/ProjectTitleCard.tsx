@@ -36,13 +36,15 @@ export default function ProjectTitleCard({ project }: { project: Project }) {
 				</Link>
 				<div>
 					<p className='font-medium mt-2 text-lg'>Supervisor Approval: </p>
-					<p>
-						{project.title?.approvedBySupervisor == null
-							? 'Pending'
-							: project.title?.approvedBySupervisor
-							? 'Yes'
-							: 'No'}
-					</p>
+					<div className=''>
+						{project.title?.approvedBySupervisor == null ? (
+							'Pending'
+						) : project.title?.approvedBySupervisor ? (
+							<p className='text-green-600'>Yes</p>
+						) : (
+							<p className='text-red-600'>No</p>
+						)}
+					</div>
 				</div>
 				<div>
 					<p className='font-medium mt-2 text-lg'>Supervisor Comment: </p>
