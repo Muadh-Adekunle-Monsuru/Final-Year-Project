@@ -75,7 +75,8 @@ type Title {
 }
 
 type Chapter {
-  chapterName String
+  chapterNumber Int
   chapterLink     String?
   supervisorComment String?
+  uploadDate DateTime @default(now()) 
 }

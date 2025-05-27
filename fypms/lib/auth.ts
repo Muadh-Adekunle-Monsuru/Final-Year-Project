@@ -318,10 +318,9 @@ export async function updateProject(
 
 export async function uploadChapter(
 	id: string,
-	value: { chapterLink: string }
+	value: { chapterLink: string; chapterNumber: number }
 ) {
 	const project = await prisma.project.findUnique({ where: { id } });
-	const maxChapter = project.chapters.length;
 
 	const res = await prisma.project.update({
 		where: { id },
@@ -329,7 +328,6 @@ export async function uploadChapter(
 			chapters: [
 				...project.chapters,
 				{
-					chapterName: `Chapter ${maxChapter + 1}`,
 					...value,
 				},
 			],

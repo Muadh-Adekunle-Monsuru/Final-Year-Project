@@ -1,19 +1,23 @@
 'use client';
-import React, { use, useState } from 'react';
-import { Label } from '../ui/label';
-import { Input } from '../ui/input';
-import { Textarea } from '@/components/ui/textarea';
-import { Button } from '../ui/button';
+import { uploadChapter } from '@/lib/auth';
 import { useEdgeStore } from '@/lib/edgestore';
-import { createTitle, updateProject, uploadChapter } from '@/lib/auth';
-import { Student } from '../student-columns';
-import { useRouter } from 'next/navigation';
-import { toast } from 'sonner';
 import { Project } from '@prisma/client';
-import { useBearStore } from '@/lib/store';
+import { useRouter } from 'next/navigation';
+import React, { useState } from 'react';
+import { toast } from 'sonner';
 import Loader from '../Loader';
+import { Button } from '../ui/button';
+import { Input } from '../ui/input';
+import { Label } from '../ui/label';
+import { ArrowUpToLine, MoveUpRight } from 'lucide-react';
 
-export default function UploadChapter({ project }: { project: Project }) {
+export default function UploadChapter({
+	project,
+	chapterNumber,
+}: {
+	project: Project;
+	chapterNumber: number;
+}) {
 	const router = useRouter();
 	const [file, setFile] = React.useState<File>();
 	const [loading, setLoading] = useState(false);
@@ -30,9 +34,10 @@ export default function UploadChapter({ project }: { project: Project }) {
 				},
 			});
 
-			await uploadChapter(project.id, { chapterLink: res.url });
+			await uploadChapter(project.id, { chapterLink: res.url, chapterNumber });
 
 			toast.success('Chapter uploaded successfully');
+			setFile(undefined);
 			router.refresh();
 		} else {
 			toast.error('Please upload a file');
@@ -40,16 +45,36 @@ export default function UploadChapter({ project }: { project: Project }) {
 		setLoading(false);
 	};
 	return (
-		<form onSubmit={handleSubmit} className='flex gap-2'>
+		<form onSubmit={handleSubmit} className='flex flex-col gap-2 my-4'>
 			{loading && <Loader />}
-			<Label>Upload chapter:</Label>
+			<h1 className='font-bold'>Chapter {chapterNumber}</h1>
+			<div>
+				{project.chapters.map((chapter, index) => {
+					if (chapter.chapterNumber == chapterNumber) {
+						return (
+							<a
+								href={chapter.chapterLink}
+								target='_blank'
+								rel='noopener noreferrer'
+								key={index}
+								className='p-4 border rounded-lg hover:shadow-sm flex items-center justify-between bg-white hover:bg-gray-50'
+							>
+								{chapter.chapterNumber}
+								<MoveUpRight className='size-5' />
+							</a>
+						);
+					}
+				})}
+			</div>
 			<div className='flex gap-2'>
 				<Input
 					id='file'
 					type='file'
 					onChange={(e) => setFile(e.target.files?.[0])}
 				/>
-				<Button>Submit</Button>
+				<Button>
+					<ArrowUpToLine className='size-4 ' />
+				</Button>
 			</div>
 		</form>
 	);
