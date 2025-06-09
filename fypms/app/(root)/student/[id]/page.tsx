@@ -4,6 +4,7 @@ import Link from 'next/link';
 import BackButton from './BackButton';
 import ShowStudentsChapters from './ShowStudentsChapter';
 import SupervisorStudentPageCard from './SupervisorStudentPageCard';
+import CollapsibleChat from '@/components/CollapsableChat';
 
 export default async function SupervisorStudentPage({
 	params,
@@ -44,6 +45,10 @@ export default async function SupervisorStudentPage({
 					<ShowStudentsChapters project={project} />
 				)}
 			</div>
+			<CollapsibleChat
+				studentId={project.studentId}
+				supervisorId={project.supervisorId}
+			/>
 		</div>
 	);
 }

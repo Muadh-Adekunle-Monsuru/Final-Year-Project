@@ -2,6 +2,8 @@ import { getName, getTitle } from '@/lib/auth';
 import { Student } from '../student-columns';
 import ProjectChapters from './ProjectChapters';
 import ProjectTitleDashboard from './ProjectTitleDashboard';
+import CollapsibleChat from '../CollapsableChat';
+import CollapsibleStudentSide from '../CollapsableStudentSide';
 
 export default async function StudentDashboard({
 	student,
@@ -25,6 +27,10 @@ export default async function StudentDashboard({
 					<ProjectChapters project={project} studentId={student.id} />
 				)}
 			</div>
+			<CollapsibleStudentSide
+				studentId={project.studentId}
+				supervisorId={project.supervisorId}
+			/>
 		</div>
 	);
 }
