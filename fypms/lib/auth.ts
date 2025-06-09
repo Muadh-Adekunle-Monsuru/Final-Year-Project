@@ -318,7 +318,7 @@ export async function updateProject(
 
 export async function uploadChapter(
 	id: string,
-	value: { chapterLink: string; chapterNumber: number }
+	value: { chapterLink: string; chapterNumber: number; chapterId: string }
 ) {
 	const project = await prisma.project.findUnique({ where: { id } });
 
@@ -329,6 +329,7 @@ export async function uploadChapter(
 				...project.chapters,
 				{
 					...value,
+					approved: false,
 				},
 			],
 		},
@@ -344,4 +345,21 @@ export async function getChapters({ studentId }) {
 	});
 
 	return res.chapters;
+}
+
+export async function approveChapter(id: string, chapterId: string) {
+	const project = await prisma.project.findUnique({ where: { id } });
+
+	const res = await prisma.project.update({
+		where: { id },
+		data: {
+			chapters: project.chapters.map((chapter) => {
+				if (chapter.chapterId === chapterId) {
+					return { ...chapter, approved: !chapter.approved };
+				}
+				return chapter;
+			}),
+		},
+	});
+	return res;
 }

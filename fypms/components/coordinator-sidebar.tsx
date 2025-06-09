@@ -11,7 +11,6 @@ import {
 	Calendar1,
 	FileStack,
 	Home,
-	Settings,
 	SquareUser,
 	UserPen,
 	UserRound,
@@ -49,25 +48,10 @@ const items = [
 		url: '/deadlines',
 		icon: Calendar1,
 	},
-	{
-		title: 'Settings',
-		url: '/settings',
-		icon: Settings,
-	},
 ];
 export default function CoordinatorSidebar() {
 	return (
 		<SidebarContent>
-			{/* <SidebarGroup>
-				<SidebarGroupLabel>User</SidebarGroupLabel>
-				<SidebarGroupContent>
-					<SidebarMenu>
-						<SidebarMenuItem>
-							<TopRightNameIcon />
-						</SidebarMenuItem>
-					</SidebarMenu>
-				</SidebarGroupContent>
-			</SidebarGroup> */}
 			<SidebarGroup>
 				<SidebarGroupLabel>Application</SidebarGroupLabel>
 				<SidebarGroupContent>

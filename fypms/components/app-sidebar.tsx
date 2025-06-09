@@ -19,7 +19,8 @@ export function AppSidebar() {
 				</h2>
 			</SidebarHeader>
 			{session?.user.role == 'COORDINATOR' && <CoordinatorSidebar />}
-			{session?.user.role == 'STUDENT' && <StudentSidebar />}
+			{session?.user.role == 'STUDENT' ||
+				(session?.user.role == 'SUPERVISOR' && <StudentSidebar />)}
 			<SidebarFooter>
 				<Button variant='ghost' asChild>
 					<Link href='/api/auth/signout' className='truncate'>

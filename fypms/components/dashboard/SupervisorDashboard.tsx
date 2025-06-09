@@ -10,7 +10,6 @@ export default function SupervisorDashboard({
 	supervisor: Supervisor;
 }) {
 	const [supeverisees, setSupervisees] = useState({});
-
 	useEffect(() => {
 		const fetch = async () => {
 			const studentName = {};
@@ -21,6 +20,7 @@ export default function SupervisorDashboard({
 					studentName[student] = {
 						name: `${name.firstName} ${name.lastName}`,
 						matric: `${name.name}`,
+						id: student,
 					};
 				}
 				if (title) {

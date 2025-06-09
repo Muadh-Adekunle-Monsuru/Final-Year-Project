@@ -2,16 +2,15 @@
 import { uploadChapter } from '@/lib/auth';
 import { useEdgeStore } from '@/lib/edgestore';
 import { Project } from '@prisma/client';
-import { ArrowUpToLine, CircleCheck, MoveUpRight } from 'lucide-react';
+import { ArrowUpToLine, MoveUpRight } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import React, { useState } from 'react';
 import { toast } from 'sonner';
 import Loader from '../Loader';
 import { Button } from '../ui/button';
 import { Input } from '../ui/input';
-import { nanoid } from 'nanoid';
 
-export default function UploadChapter({
+export default function AbstractUpload({
 	project,
 	chapterNumber,
 }: {
@@ -33,14 +32,10 @@ export default function UploadChapter({
 					// you can use this to show a progress bar
 				},
 			});
-			const chapterId = nanoid();
-			await uploadChapter(project.id, {
-				chapterLink: res.url,
-				chapterNumber,
-				chapterId,
-			});
 
-			toast.success('Chapter uploaded successfully');
+			await uploadChapter(project.id, { chapterLink: res.url, chapterNumber });
+
+			toast.success('Abstract uploaded successfully');
 			setFile(undefined);
 			router.refresh();
 		} else {
@@ -51,7 +46,7 @@ export default function UploadChapter({
 	return (
 		<form onSubmit={handleSubmit} className='flex flex-col gap-2 py-4'>
 			{loading && <Loader />}
-			<h1 className='font-medium'>Chapter {chapterNumber}</h1>
+			<h1 className='font-medium'>Abstract</h1>
 			<div>
 				{project.chapters.map((chapter, index) => {
 					if (chapter.chapterNumber == chapterNumber) {
@@ -67,11 +62,6 @@ export default function UploadChapter({
 									{chapter?.uploadDate?.toLocaleString()}
 									<MoveUpRight className='size-4' />
 								</a>
-								<CircleCheck
-									className={`size-5 rounded-full ${
-										chapter.approved ? 'bg-green-200' : 'bg-red-200'
-									}`}
-								/>
 							</div>
 						);
 					}
