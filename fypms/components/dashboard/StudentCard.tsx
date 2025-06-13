@@ -1,11 +1,5 @@
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import {
-	Table,
-	TableBody,
-	TableCell,
-	TableFooter,
-	TableRow,
-} from '@/components/ui/table';
+import { Card, CardContent } from '@/components/ui/card';
+import { Table, TableBody, TableCell, TableRow } from '@/components/ui/table';
 import { getStudents } from '@/lib/auth';
 import { ArrowRight } from 'lucide-react';
 import Link from 'next/link';

@@ -1,13 +1,6 @@
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import {
-	Table,
-	TableBody,
-	TableCell,
-	TableFooter,
-	TableRow,
-} from '@/components/ui/table';
-import { getEvents, getPastQuestions, getStudents } from '@/lib/auth';
-import { prisma } from '@/lib/client';
+import { Card, CardContent } from '@/components/ui/card';
+import { Table, TableBody, TableCell, TableRow } from '@/components/ui/table';
+import { getEvents } from '@/lib/auth';
 import { ArrowRight } from 'lucide-react';
 import Link from 'next/link';
 

@@ -29,7 +29,7 @@ export default function UploadChapter({
 		if (file) {
 			const res = await edgestore.publicFiles.upload({
 				file,
-				onProgressChange: (progress) => {
+				onProgressChange: () => {
 					// you can use this to show a progress bar
 				},
 			});

@@ -35,11 +35,6 @@ export default function GroupedAllocation({ groups }) {
 	}, [groups]);
 
 	const saveAllocationToDatabase = async () => {
-		const res = await saveAllocation({
-			allocationName,
-			groups: JSON.stringify(groups),
-			supervisorNames: JSON.stringify(groupNames),
-		});
 		setAllocationName('');
 		router.refresh();
 		toast.success('Allocation saved successfully!');

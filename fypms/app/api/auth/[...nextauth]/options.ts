@@ -1,7 +1,7 @@
+import { verifyPassword } from '@/lib/auth';
+import { prisma } from '@/lib/client';
 import type { NextAuthOptions } from 'next-auth';
 import CredentialsProvider from 'next-auth/providers/credentials';
-import { prisma } from '@/lib/client';
-import { hashPassword, verifyPassword } from '@/lib/auth';
 
 export const options: NextAuthOptions = {
 	providers: [

@@ -1,17 +1,17 @@
 'use client';
-import React, { use, useState } from 'react';
-import { Label } from '../ui/label';
-import { Input } from '../ui/input';
 import { Textarea } from '@/components/ui/textarea';
-import { Button } from '../ui/button';
-import { useEdgeStore } from '@/lib/edgestore';
 import { createTitle, updateProject } from '@/lib/auth';
-import { Student } from '../student-columns';
-import { useRouter } from 'next/navigation';
-import { toast } from 'sonner';
-import { Project } from '@prisma/client';
+import { useEdgeStore } from '@/lib/edgestore';
 import { useBearStore } from '@/lib/store';
+import { Project } from '@prisma/client';
+import { useRouter } from 'next/navigation';
+import React, { useState } from 'react';
+import { toast } from 'sonner';
 import Loader from '../Loader';
+import { Student } from '../student-columns';
+import { Button } from '../ui/button';
+import { Input } from '../ui/input';
+import { Label } from '../ui/label';
 
 export default function ProjectTitleForm({
 	student,
@@ -36,7 +36,7 @@ export default function ProjectTitleForm({
 		if (file) {
 			const res = await edgestore.publicFiles.upload({
 				file,
-				onProgressChange: (progress) => {
+				onProgressChange: () => {
 					// you can use this to show a progress bar
 				},
 			});

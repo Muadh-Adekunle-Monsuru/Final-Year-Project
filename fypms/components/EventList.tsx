@@ -17,9 +17,6 @@ export default function EventList({ events }: { events: Deadlines[] }) {
 			<p className='font-bold'>Created Deadlines</p>
 			<div className='grid divide-y-2'>
 				{events.map((event) => {
-					const dates = JSON.parse(event.date).map((date, index) => (
-						<p key={index}>{new Date(date).toDateString()} </p>
-					));
 					return (
 						<div
 							className=' grid grid-cols-2 p-3  hover:bg-neutral-50 transition-colors relative group'

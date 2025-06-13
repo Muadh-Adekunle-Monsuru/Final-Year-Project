@@ -31,7 +31,6 @@ export function PastProjectDataTable<TData, TValue>({
 	columns,
 	data,
 }: DataTableProps<TData, TValue>) {
-	const router = useRouter();
 	const [sorting, setSorting] = useState<SortingState>([]);
 	const table = useReactTable({
 		data,

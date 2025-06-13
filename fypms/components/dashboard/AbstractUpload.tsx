@@ -9,6 +9,7 @@ import { toast } from 'sonner';
 import Loader from '../Loader';
 import { Button } from '../ui/button';
 import { Input } from '../ui/input';
+import { nanoid } from 'nanoid';
 
 export default function AbstractUpload({
 	project,
@@ -28,12 +29,17 @@ export default function AbstractUpload({
 		if (file) {
 			const res = await edgestore.publicFiles.upload({
 				file,
-				onProgressChange: (progress) => {
+				onProgressChange: () => {
 					// you can use this to show a progress bar
 				},
 			});
 
-			await uploadChapter(project.id, { chapterLink: res.url, chapterNumber });
+			const chapterId = nanoid();
+			await uploadChapter(project.id, {
+				chapterLink: res.url,
+				chapterNumber,
+				chapterId,
+			});
 
 			toast.success('Abstract uploaded successfully');
 			setFile(undefined);

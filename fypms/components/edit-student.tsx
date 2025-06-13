@@ -50,7 +50,7 @@ export function EditStudent({ student }: { student: Student }) {
 				<DialogHeader>
 					<DialogTitle>Edit profile</DialogTitle>
 					<DialogDescription>
-						Make changes to student profile here. Click save when you're done.
+						Make changes to student profile here. Click save when you are done.
 					</DialogDescription>
 				</DialogHeader>
 				<form className='grid gap-4 py-4' onSubmit={handleSubmit}>

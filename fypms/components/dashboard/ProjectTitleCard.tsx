@@ -3,8 +3,6 @@ import { useBearStore } from '@/lib/store';
 import { Project } from '@prisma/client';
 import { ExternalLink, PencilIcon } from 'lucide-react';
 import Link from 'next/link';
-import React, { useState } from 'react';
-import { useStore } from 'zustand';
 
 export default function ProjectTitleCard({ project }: { project: Project }) {
 	// const [editable, setEditable] = useState(false);

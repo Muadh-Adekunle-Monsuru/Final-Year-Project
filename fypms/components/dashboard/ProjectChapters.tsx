@@ -1,14 +1,11 @@
-import { getChapters } from '@/lib/auth';
 import { Project } from '@prisma/client';
 import AbstractUpload from './AbstractUpload';
 import UploadChapter from './UploadChapter';
 
 export default async function ProjectChapters({
 	project,
-	studentId,
 }: {
 	project: Project;
-	studentId: string;
 }) {
 	// const chapters = await getChapters({ studentId });
 	return (
