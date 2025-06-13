@@ -1,12 +1,9 @@
 'use client';
 import React from 'react';
 import { Button } from './ui/button';
-import { bulkPastQuestions } from '@/lib/auth';
 
 export default function PastProjectForm() {
-	const handleClick = async () => {
-		await bulkPastQuestions();
-	};
+	const handleClick = async () => {};
 	return (
 		<div>
 			<Button onClick={handleClick}>Upload</Button>
