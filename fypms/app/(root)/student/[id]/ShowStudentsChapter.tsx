@@ -4,8 +4,12 @@ import ViewChapter from './ViewChapter';
 
 export default function ShowStudentsChapters({
 	project,
+	studentName,
+	supervisorName,
 }: {
 	project: Project;
+	studentName: string;
+	supervisorName: string;
 }) {
 	return (
 		<div className=' p-2 border-t-2 grid space-y-1 mt-4'>
@@ -16,7 +20,12 @@ export default function ShowStudentsChapters({
 				<ViewChapter project={project} chapterNumber={3} />
 				<ViewChapter project={project} chapterNumber={4} />
 				<ViewChapter project={project} chapterNumber={5} />
-				<ViewChapter project={project} chapterNumber={0} />
+				<ViewChapter
+					project={project}
+					chapterNumber={0}
+					studentName={studentName}
+					supervisorName={supervisorName}
+				/>
 			</div>
 		</div>
 	);

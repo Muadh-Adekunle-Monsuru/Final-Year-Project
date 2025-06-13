@@ -1,20 +1,11 @@
 'use client';
 
 import { ColumnDef } from '@tanstack/react-table';
-import { ArrowUpDown, MoreHorizontal } from 'lucide-react';
+import { ArrowUpDown } from 'lucide-react';
 
 import { Button } from '@/components/ui/button';
-import {
-	DropdownMenu,
-	DropdownMenuContent,
-	DropdownMenuItem,
-	DropdownMenuLabel,
-	DropdownMenuTrigger,
-} from '@/components/ui/dropdown-menu';
-import { deleteUser } from '@/lib/auth';
-import { redirect } from 'next/navigation';
-import { EditStudent } from './edit-student';
 import { PastProjects } from '@prisma/client';
+import Link from 'next/link';
 // This type is used to define the shape of our data.
 // You can use a Zod schema here if you want.
 export const pastprojectscolumns: ColumnDef<PastProjects>[] = [
@@ -80,6 +71,15 @@ export const pastprojectscolumns: ColumnDef<PastProjects>[] = [
 					<ArrowUpDown className='ml-2 h-4 w-4' />
 				</Button>
 			);
+		},
+	},
+	{
+		accessorKey: 'Abstract',
+		cell: ({ row }) => {
+			if (row.original.projectLink) {
+				return <Link href={row.original.projectLink}>view</Link>;
+			}
+			return '-';
 		},
 	},
 	// {

@@ -26,7 +26,7 @@ const items = [
 	},
 	{
 		title: 'Past Projects',
-		url: 'past-projects',
+		url: '/past-projects',
 		icon: FileStack,
 	},
 	{

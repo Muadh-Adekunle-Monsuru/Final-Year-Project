@@ -1,8 +1,9 @@
 'use client';
 import Loader from '@/components/Loader';
-import { approveChapter } from '@/lib/auth';
+import { approveChapter, UploadPastQuestions } from '@/lib/auth';
 import { Project } from '@prisma/client';
 import { CircleCheck, MoveUpRight } from 'lucide-react';
+import { nanoid } from 'nanoid';
 import { useRouter } from 'next/navigation';
 import React, { useState } from 'react';
 import { toast } from 'sonner';
@@ -10,18 +11,41 @@ import { toast } from 'sonner';
 export default function ViewChapter({
 	project,
 	chapterNumber,
+	studentName,
+	supervisorName,
 }: {
 	project: Project;
 	chapterNumber: number;
+	studentName?: string;
+	supervisorName?: string;
 }) {
 	const router = useRouter();
 	const [approving, setApproving] = useState(false);
-	const approveChapterLocal = async (chapterId) => {
+	const approveChapterLocal = async (chapterId, chapterLink) => {
 		setApproving(true);
 		await approveChapter(project.id, chapterId);
 		setApproving(false);
 		router.refresh();
 		toast.success('Chapter approval changed');
+
+		if (chapterNumber === 0) {
+			await addToPastProjects(chapterId, chapterLink);
+			toast.success('Abstract added to past projects');
+		}
+	};
+
+	const addToPastProjects = async (chapterId, chapterLink) => {
+		await UploadPastQuestions({
+			values: {
+				year: new Date().getFullYear().toString(),
+				authors: [studentName],
+				projectDescription: project.title.titleDescription,
+				projectLink: chapterLink,
+				serialNumber: '-',
+				supervisorNames: supervisorName,
+				title: project.title.title,
+			},
+		});
 	};
 	return (
 		<div>
@@ -48,7 +72,7 @@ export default function ViewChapter({
 								</a>
 								<span
 									onClick={() => {
-										approveChapterLocal(chapter.chapterId);
+										approveChapterLocal(chapter.chapterId, chapter.chapterLink);
 									}}
 								>
 									<CircleCheck

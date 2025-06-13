@@ -15,6 +15,7 @@ export default async function SupervisorStudentPage({
 
 	const studentName = await getName(id);
 	const project = await getTitle({ studentId: id });
+	const supervisorName = await getName(project.supervisorId);
 	return (
 		<div className='p-5'>
 			<BackButton />
@@ -42,7 +43,11 @@ export default async function SupervisorStudentPage({
 				<SupervisorStudentPageCard project={project} />
 
 				{project?.chapters.length > 0 && (
-					<ShowStudentsChapters project={project} />
+					<ShowStudentsChapters
+						project={project}
+						studentName={`${studentName.firstName} ${studentName.lastName}`}
+						supervisorName={`${supervisorName.firstName} ${supervisorName.lastName}`}
+					/>
 				)}
 			</div>
 			<CollapsibleChat

@@ -1,7 +1,6 @@
 'use server';
 import bycrpt from 'bcryptjs';
 import { prisma } from './client';
-import { pastP } from '@/components/pastprojects';
 export async function hashPassword(password: string) {
 	const saltRounds = 10;
 	return bycrpt.hash(password, saltRounds);
@@ -203,14 +202,16 @@ export async function saveAllocation(values: any) {
 	return allocation;
 }
 
-export async function bulkPastQuestions() {
-	await prisma.pastProjects.createMany({
-		data: pastP,
+export async function UploadPastQuestions({ values }: { values: any }) {
+	await prisma.pastProjects.create({
+		data: values,
 	});
 }
 
 export async function getPastQuestions() {
-	const res = await prisma.pastProjects.findMany({});
+	const res = await prisma.pastProjects.findMany({
+		orderBy: { year: 'desc' },
+	});
 	return res;
 }
 

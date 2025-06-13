@@ -11,16 +11,17 @@ export function AppSidebar() {
 	return (
 		<Sidebar collapsible='icon'>
 			<SidebarHeader>
-				<h2
+				<Link
 					className='font-bold p-1 text-xl flex-wrap
 				 select-none truncate'
+					href={'/'}
 				>
 					FYPMS
-				</h2>
+				</Link>
 			</SidebarHeader>
 			{session?.user.role == 'COORDINATOR' && <CoordinatorSidebar />}
-			{session?.user.role == 'STUDENT' ||
-				(session?.user.role == 'SUPERVISOR' && <StudentSidebar />)}
+			{(session?.user.role == 'STUDENT' ||
+				session?.user.role == 'SUPERVISOR') && <StudentSidebar />}
 			<SidebarFooter>
 				<Button variant='ghost' asChild>
 					<Link href='/api/auth/signout' className='truncate'>

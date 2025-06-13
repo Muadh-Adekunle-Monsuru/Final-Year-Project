@@ -13,7 +13,7 @@ export default function EventList({ events }: { events: Deadlines[] }) {
 		toast('Event deleted ❌');
 	};
 	return (
-		<div className='border p-5 rounded-2xl w-full max-h-96  overflow-auto'>
+		<div className='border p-5 rounded-2xl w-full md:max-h-96  overflow-auto'>
 			<p className='font-bold'>Created Deadlines</p>
 			<div className='grid divide-y-2'>
 				{events.map((event) => {
