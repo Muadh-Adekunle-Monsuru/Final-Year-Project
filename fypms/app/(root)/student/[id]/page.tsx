@@ -6,17 +6,18 @@ import ShowStudentsChapters from './ShowStudentsChapter';
 import SupervisorStudentPageCard from './SupervisorStudentPageCard';
 import CollapsibleChat from '@/components/CollapsableChat';
 
-export default async function SupervisorStudentPage({
-	params,
-}: {
-	params: { id: string };
-}) {
-	const { id } = params;
+export default async function SupervisorStudentPage(
+    props: {
+        params: Promise<{ id: string }>;
+    }
+) {
+    const params = await props.params;
+    const { id } = params;
 
-	const studentName = await getName(id);
-	const project = await getTitle({ studentId: id });
-	const supervisorName = await getName(project.supervisorId);
-	return (
+    const studentName = await getName(id);
+    const project = await getTitle({ studentId: id });
+    const supervisorName = await getName(project.supervisorId);
+    return (
 		<div className='p-5'>
 			<BackButton />
 			<p className='font-medium text-sm'>Student:</p>
