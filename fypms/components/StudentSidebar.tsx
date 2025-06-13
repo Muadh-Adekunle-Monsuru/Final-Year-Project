@@ -7,15 +7,7 @@ import {
 	SidebarMenuButton,
 	SidebarMenuItem,
 } from '@/components/ui/sidebar';
-import {
-	Calendar1,
-	FileStack,
-	Home,
-	Settings,
-	SquareUser,
-	UserPen,
-	UserRound,
-} from 'lucide-react';
+import { Calendar1, FileStack, Home } from 'lucide-react';
 import Link from 'next/link';
 
 const items = [

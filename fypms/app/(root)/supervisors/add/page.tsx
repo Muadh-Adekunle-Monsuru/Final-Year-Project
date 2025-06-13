@@ -1,13 +1,10 @@
-import React from 'react';
-import { getServerSession } from 'next-auth';
-import { getStudents, getSupervisors, getUserDetails } from '@/lib/auth';
-import { redirect } from 'next/navigation';
-import AddStudentInput from '@/components/add-student-input';
-import { StudentDataTable } from '@/components/student-list-table';
 import AddSupervisorInput from '@/components/add-supervisor-input';
-import { SupervisorDataTable } from '@/components/supervisor-data-table';
 import { supervisorColumns } from '@/components/supervisor-columns';
+import { SupervisorDataTable } from '@/components/supervisor-data-table';
 import UploadSupervisorCsv from '@/components/upload-supervisor-csv';
+import { getSupervisors, getUserDetails } from '@/lib/auth';
+import { getServerSession } from 'next-auth';
+import { redirect } from 'next/navigation';
 
 export default async function page() {
 	const session = await getServerSession();

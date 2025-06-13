@@ -4,12 +4,13 @@ import {
 	ColumnDef,
 	flexRender,
 	getCoreRowModel,
-	useReactTable,
 	getPaginationRowModel,
-	SortingState,
 	getSortedRowModel,
+	SortingState,
+	useReactTable,
 } from '@tanstack/react-table';
 
+import { Button } from '@/components/ui/button';
 import {
 	Table,
 	TableBody,
@@ -18,10 +19,9 @@ import {
 	TableHeader,
 	TableRow,
 } from '@/components/ui/table';
-import { Button } from '@/components/ui/button';
-import { useState } from 'react';
-import { clearStudentTable, clearSupervisorTable } from '@/lib/auth';
+import { clearSupervisorTable } from '@/lib/auth';
 import { useRouter } from 'next/navigation';
+import { useState } from 'react';
 
 interface DataTableProps<TData, TValue> {
 	columns: ColumnDef<TData, TValue>[];
@@ -61,7 +61,7 @@ export function SupervisorDataTable<TData, TValue>({
 												: flexRender(
 														header.column.columnDef.header,
 														header.getContext()
-												  )}
+													)}
 										</TableHead>
 									);
 								})}

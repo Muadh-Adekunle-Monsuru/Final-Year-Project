@@ -3,9 +3,8 @@ import Loader from '@/components/Loader';
 import { approveChapter, UploadPastQuestions } from '@/lib/auth';
 import { Project } from '@prisma/client';
 import { CircleCheck, MoveUpRight } from 'lucide-react';
-import { nanoid } from 'nanoid';
 import { useRouter } from 'next/navigation';
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { toast } from 'sonner';
 
 export default function ViewChapter({

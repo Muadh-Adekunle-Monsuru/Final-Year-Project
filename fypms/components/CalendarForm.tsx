@@ -1,13 +1,12 @@
 'use client';
-import React, { useState } from 'react';
-import { Calendar } from './ui/calendar';
-import { DateRange } from 'react-day-picker';
-import { Input } from './ui/input';
-import { Label } from './ui/label';
-import { Button } from './ui/button';
 import { createEvent } from '@/lib/auth';
 import { useRouter } from 'next/navigation';
+import { useState } from 'react';
 import { toast } from 'sonner';
+import { Button } from './ui/button';
+import { Calendar } from './ui/calendar';
+import { Input } from './ui/input';
+import { Label } from './ui/label';
 export default function CalendarForm() {
 	const router = useRouter();
 	const [date, setDate] = useState<Date[] | undefined>();
