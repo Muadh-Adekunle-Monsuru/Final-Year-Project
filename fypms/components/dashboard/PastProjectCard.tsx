@@ -8,7 +8,7 @@ export default async function PastProjectCard() {
 	const data = await getPastQuestions();
 
 	return (
-		<Card className='lg:max-w-sm w-full '>
+		<Card className='lg:max-w-sm w-fit'>
 			<CardContent>
 				<p className='font-bold p-2'>{data.length} past projects</p>
 				<Table>

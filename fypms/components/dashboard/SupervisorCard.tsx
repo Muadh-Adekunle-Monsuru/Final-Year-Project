@@ -7,10 +7,7 @@ import Link from 'next/link';
 export default async function SupervisorCard() {
 	const supervisors = await getSupervisors();
 	return (
-		<Card className='w-full'>
-			{/* <CardHeader>
-				<CardTitle></CardTitle>
-			</CardHeader> */}
+		<Card className='w-fit'>
 			<CardContent>
 				<p className='font-bold p-2'> {supervisors.length} supervisors</p>
 				<Table>

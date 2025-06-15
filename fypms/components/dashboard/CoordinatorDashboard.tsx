@@ -6,7 +6,7 @@ import PastProjectCard from '@/components/dashboard/PastProjectCard';
 import DeadlineCard from '@/components/dashboard/DeadlineCard';
 export default function CoordinatorDashboard() {
 	return (
-		<div className='flex flex-wrap justify-around gap-5 mt-5'>
+		<div className='flex flex-wrap justify-center gap-5 mt-5'>
 			<StudentCard />
 			<SupervisorCard />
 			<AllocationCard />

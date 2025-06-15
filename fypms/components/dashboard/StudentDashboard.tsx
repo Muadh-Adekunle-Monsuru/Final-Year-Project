@@ -22,14 +22,16 @@ export default async function StudentDashboard({
 						: 'yet to be assigned'}
 				</div>
 				<ProjectTitleDashboard project={project} student={student} />
-				{project.title.approvedBySupervisor && (
+				{project?.title?.approvedBySupervisor && (
 					<ProjectChapters project={project} />
 				)}
 			</div>
-			<CollapsibleStudentSide
-				studentId={project.studentId}
-				supervisorId={project.supervisorId}
-			/>
+			{project?.studentId && (
+				<CollapsibleStudentSide
+					studentId={project?.studentId}
+					supervisorId={project?.supervisorId}
+				/>
+			)}
 		</div>
 	);
 }

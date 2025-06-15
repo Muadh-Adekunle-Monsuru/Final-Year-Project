@@ -7,7 +7,7 @@ import Link from 'next/link';
 export default async function StudentCard() {
 	const students = await getStudents();
 	return (
-		<Card className='w-full'>
+		<Card className='w-fit'>
 			<CardContent>
 				<p className='font-bold p-2'> {students.length} students</p>
 				<Table>

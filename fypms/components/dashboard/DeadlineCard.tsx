@@ -13,7 +13,7 @@ export default async function DeadlineCard() {
 	);
 
 	return (
-		<Card className='lg:max-w-sm w-full'>
+		<Card className='lg:max-w-sm w-fit'>
 			<CardContent>
 				<p className='font-bold p-2'>{data.length} deadlines</p>
 				<Table>

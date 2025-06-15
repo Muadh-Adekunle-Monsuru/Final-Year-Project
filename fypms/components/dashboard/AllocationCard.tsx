@@ -8,7 +8,7 @@ export default async function AllocationCard() {
 	const pastAllocations = await prisma.allocation.findMany({});
 
 	return (
-		<Card className='w-full'>
+		<Card className='w-fit'>
 			<CardContent>
 				<p className='font-bold p-2'>
 					{' '}
