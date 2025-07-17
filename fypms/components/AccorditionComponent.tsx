@@ -23,6 +23,7 @@ export default function AccorditionComponent({
 							<AccordionAllocation
 								groupNames={JSON.parse(allocation.supervisorNames)}
 								groups={JSON.parse(allocation.groups)}
+								allocationName={allocation.name}
 							/>
 						</AccordionContent>
 					</AccordionItem>

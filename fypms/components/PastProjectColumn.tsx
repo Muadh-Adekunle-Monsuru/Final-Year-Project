@@ -17,7 +17,7 @@ export const pastprojectscolumns: ColumnDef<PastProjects>[] = [
 					variant='ghost'
 					onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
 				>
-					S.N.
+					Library S.N.
 					<ArrowUpDown className='ml-2 h-4 w-4' />
 				</Button>
 			);
