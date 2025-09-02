@@ -91,15 +91,27 @@ export async function allocateSupervisors() {
 	const students = await getStudents();
 	students.sort((a, b) => parseFloat(b.CGPA) - parseFloat(a.CGPA));
 	const supervisors = await getSupervisors();
-	const allocatedStudents = students.map((student, index) => {
-		const supervisor = supervisors[index % supervisors.length];
+
+	// Create a copy of supervisors array that we can shuffle
+	let availableSupervisors = [...supervisors];
+
+	const allocatedStudents = students.map((student) => {
+		// If we've used all supervisors, reset the available list
+		if (availableSupervisors.length === 0) {
+			availableSupervisors = [...supervisors];
+		}
+
+		// Pick a random supervisor from the available ones
+		const randomIndex = Math.floor(Math.random() * availableSupervisors.length);
+		const supervisor = availableSupervisors[randomIndex];
+		// Remove the selected supervisor from available list
+		availableSupervisors.splice(randomIndex, 1);
 
 		return prisma.user.update({
 			where: { id: student.id },
 			data: { supervisor: supervisor.id },
 		});
 	});
-	//group and return students with their supervisors
 
 	const groupsObj = {};
 	const groups = (await Promise.all(allocatedStudents)).map(
