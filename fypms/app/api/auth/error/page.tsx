@@ -5,7 +5,7 @@ import { Button } from '@/components/ui/button';
 import { useSearchParams, useRouter } from 'next/navigation';
 import { Suspense } from 'react';
 
-export function Wrapped() {
+function Wrapped() {
 	const params = useSearchParams();
 	const router = useRouter();
 	const error = params.get('error');
