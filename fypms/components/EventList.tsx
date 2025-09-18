@@ -5,7 +5,13 @@ import { Trash2 } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import React from 'react';
 import { toast } from 'sonner';
-export default function EventList({ events }: { events: Deadlines[] }) {
+export default function EventList({
+	events,
+	isCoordinator,
+}: {
+	events: Deadlines[];
+	isCoordinator: boolean;
+}) {
 	const router = useRouter();
 	const handleDelete = async (id: string) => {
 		await deleteEvent(id);
@@ -34,12 +40,14 @@ export default function EventList({ events }: { events: Deadlines[] }) {
 									</span>
 								)}
 							</div>
-							<Trash2
-								className='absolute -right-5 top-4 size-5 opacity-0 group-hover:opacity-100 transition-opacity duration-300 cursor-pointer hover:text-neutral-600'
-								onClick={() => {
-									handleDelete(event.id);
-								}}
-							/>
+							{isCoordinator && (
+								<Trash2
+									className='absolute -right-5 top-4 size-5 opacity-0 group-hover:opacity-100 transition-opacity duration-300 cursor-pointer hover:text-neutral-600'
+									onClick={() => {
+										handleDelete(event.id);
+									}}
+								/>
+							)}
 						</div>
 					);
 				})}

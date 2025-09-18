@@ -21,6 +21,7 @@ export default function AccorditionComponent({
 						<AccordionTrigger>{allocation.name}</AccordionTrigger>
 						<AccordionContent>
 							<AccordionAllocation
+								allocationId={allocation.id}
 								groupNames={JSON.parse(allocation.supervisorNames)}
 								groups={JSON.parse(allocation.groups)}
 								allocationName={allocation.name}

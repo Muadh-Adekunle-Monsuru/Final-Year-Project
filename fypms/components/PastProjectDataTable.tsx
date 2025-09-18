@@ -21,6 +21,7 @@ import {
 	TableRow,
 } from '@/components/ui/table';
 import { useState } from 'react';
+import { UploadBlukPastQuestions } from '@/lib/auth';
 
 interface DataTableProps<TData, TValue> {
 	columns: ColumnDef<TData, TValue>[];
@@ -67,7 +68,7 @@ export function PastProjectDataTable<TData, TValue>({
 					className='border border-black px-3 py-2 rounded-md w-full max-w-sm'
 				/>
 			</div>
-
+			{/* <Button onClick={() => UploadBlukPastQuestions()}>Upload Bulk</Button> */}
 			<div className='rounded-md border mt-2 w-full'>
 				<Table>
 					<TableHeader>

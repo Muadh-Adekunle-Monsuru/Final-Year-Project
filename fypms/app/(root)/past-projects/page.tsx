@@ -7,9 +7,7 @@ export default async function Page() {
 	return (
 		<div className='min-h-screen p-8 pb-10 font-[family-name:var(--font-geist-sans)]'>
 			<h1 className='text-4xl font-bold'>View Past Projects</h1>
-			<p className='text-lg'>
-				This is where students past projects are viewed.
-			</p>
+			<p className='text-lg'>View past project titles.</p>
 			<PastProjectDataTable columns={pastprojectscolumns} data={data} />
 		</div>
 	);

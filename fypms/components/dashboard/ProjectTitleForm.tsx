@@ -71,6 +71,9 @@ export default function ProjectTitleForm({
 			onSubmit={handleSubmit}
 		>
 			{loading && <Loader />}
+			<h1 className='my-4 font-semibold text-xl'>
+				{project?.id ? 'Update Project Title' : 'Submit Project Title'}
+			</h1>
 			<Label>Title:</Label>
 			<Input
 				placeholder='Design and Implementation of a digital ...'

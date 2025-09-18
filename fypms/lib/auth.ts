@@ -1,7 +1,7 @@
 'use server';
 import bycrpt from 'bcryptjs';
 import { prisma } from './client';
-import { newpast } from './newpast';
+import { latestPast } from './latestPast';
 export async function hashPassword(password: string) {
 	const saltRounds = 10;
 	return bycrpt.hash(password, saltRounds);
@@ -223,7 +223,7 @@ export async function UploadPastQuestions({ values }: { values: any }) {
 
 export async function UploadBlukPastQuestions() {
 	await prisma.pastProjects.createMany({
-		data: newpast,
+		data: latestPast,
 	});
 }
 
@@ -382,4 +382,9 @@ export async function approveChapter(id: string, chapterId: string) {
 		},
 	});
 	return res;
+}
+
+export async function deleteAllocation(id: string) {
+	const allocation = await prisma.allocation.delete({ where: { id } });
+	return allocation;
 }

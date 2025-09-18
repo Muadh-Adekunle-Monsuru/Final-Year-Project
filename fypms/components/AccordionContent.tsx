@@ -6,11 +6,15 @@ import { Switch } from './ui/switch';
 import { useRef, useState } from 'react';
 import { useReactToPrint } from 'react-to-print';
 import styles from './printstyle.module.css';
+import { deleteAllocation } from '@/lib/auth';
+import { toast } from 'sonner';
+import { useRouter } from 'next/navigation';
 
 export default function AccordionAllocation({
 	groups,
 	groupNames,
 	allocationName,
+	allocationId,
 }) {
 	const contentRef = useRef<HTMLDivElement>(null);
 	const reactToPrintFn = useReactToPrint({
@@ -19,6 +23,7 @@ export default function AccordionAllocation({
 	});
 
 	const [showCGPA, setShowCGPA] = useState(false);
+	const router = useRouter();
 	return (
 		<div className='border rounded-2xl grid divide-y-2 mt-5'>
 			<div className='flex items-center justify-center p-5 gap-6'>
@@ -29,6 +34,15 @@ export default function AccordionAllocation({
 				<Button onClick={() => reactToPrintFn()}>
 					<Printer />
 					Print
+				</Button>
+				<Button
+					onClick={() => {
+						deleteAllocation(allocationId);
+						toast('Allocation deleted successfully');
+						router.refresh();
+					}}
+				>
+					Delete Allocation
 				</Button>
 			</div>
 			<div ref={contentRef} className={styles.container}>
