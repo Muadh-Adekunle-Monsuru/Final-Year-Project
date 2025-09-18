@@ -3,8 +3,9 @@
 
 import { Button } from '@/components/ui/button';
 import { useSearchParams, useRouter } from 'next/navigation';
+import { Suspense } from 'react';
 
-export default function AuthErrorPage() {
+export function Wrapped() {
 	const params = useSearchParams();
 	const router = useRouter();
 	const error = params.get('error');
@@ -20,5 +21,13 @@ export default function AuthErrorPage() {
 				Go Back
 			</Button>
 		</div>
+	);
+}
+
+export default function Page() {
+	return (
+		<Suspense fallback={<div>Loading...</div>}>
+			<Wrapped />
+		</Suspense>
 	);
 }
