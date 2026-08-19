@@ -1,13 +1,14 @@
 import { ChevronLeft } from 'lucide-react';
 import Link from 'next/link';
-import React from 'react';
 
 export default function BackButton() {
 	return (
-		<Link href={'/'} className='mb-4 w-fit'>
-			<div className='border p-1 w-fit rounded-md'>
-				<ChevronLeft className='size-5 text-muted-foreground' />
-			</div>
+		<Link
+			href='/'
+			className='inline-flex items-center gap-1 rounded-lg border bg-card px-2 py-1.5 text-sm text-muted-foreground transition-colors hover:text-foreground'
+		>
+			<ChevronLeft className='size-4' />
+			Dashboard
 		</Link>
 	);
 }

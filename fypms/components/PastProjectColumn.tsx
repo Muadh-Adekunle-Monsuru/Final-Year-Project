@@ -6,6 +6,7 @@ import { ArrowUpDown } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { PastProjects } from '@prisma/client';
 import Link from 'next/link';
+import DeletePastProjectButton from './DeletePastProjectButton';
 // This type is used to define the shape of our data.
 // You can use a Zod schema here if you want.
 export const pastprojectscolumns: ColumnDef<PastProjects>[] = [
@@ -51,6 +52,12 @@ export const pastprojectscolumns: ColumnDef<PastProjects>[] = [
 				</Button>
 			);
 		},
+		filterFn: (row, _id, value) => {
+			const query = String(value ?? '').toLowerCase();
+			return (row.original.authors ?? []).some((author) =>
+				author.toLowerCase().includes(query)
+			);
+		},
 		cell: ({ row }) => {
 			return row.original.authors.map((val, index) => (
 				<span key={index} className='block'>
@@ -82,30 +89,25 @@ export const pastprojectscolumns: ColumnDef<PastProjects>[] = [
 			return '-';
 		},
 	},
-	// {
-	// 	id: 'actions',
-	// 	cell: ({ row }) => {
-	// 		const user = row.original;
-	// 		const removeUser = async () => {
-	// 			await deleteUser(user.id);
-	// 			redirect('#');
-	// 		};
-	// 		return (
-	// 			<DropdownMenu>
-	// 				<DropdownMenuTrigger asChild>
-	// 					<Button variant='ghost' className='h-8 w-8 p-0'>
-	// 						<span className='sr-only'>Open menu</span>
-	// 						<MoreHorizontal className='h-4 w-4' />
-	// 					</Button>
-	// 				</DropdownMenuTrigger>
-	// 				<DropdownMenuContent align='end'>
-	// 					<DropdownMenuLabel>
-	// 						{/* <EditStudent student={user} /> */}
-	// 					</DropdownMenuLabel>
-	// 					<DropdownMenuItem onClick={removeUser}>Delete</DropdownMenuItem>
-	// 				</DropdownMenuContent>
-	// 			</DropdownMenu>
-	// 		);
-	// 	},
-	// },
 ];
+
+export function getPastProjectColumns(
+	canDelete: boolean
+): ColumnDef<PastProjects>[] {
+	if (!canDelete) return pastprojectscolumns;
+
+	return [
+		...pastprojectscolumns,
+		{
+			id: 'actions',
+			header: 'Actions',
+			enableGlobalFilter: false,
+			cell: ({ row }) => (
+				<DeletePastProjectButton
+					id={row.original.id}
+					title={row.original.title}
+				/>
+			),
+		},
+	];
+}

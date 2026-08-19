@@ -5,49 +5,71 @@ import { useState } from 'react';
 import { toast } from 'sonner';
 import { Button } from './ui/button';
 import { Calendar } from './ui/calendar';
+import { Card, CardContent } from './ui/card';
 import { Input } from './ui/input';
 import { Label } from './ui/label';
+
 export default function CalendarForm() {
 	const router = useRouter();
 	const [date, setDate] = useState<Date[] | undefined>();
 	const [event, setEvent] = useState('');
+	const [saving, setSaving] = useState(false);
 
 	const handleCreate = async () => {
-		if (!date || !event) {
+		if (!date?.length || !event.trim()) {
+			toast.error('Add a milestone name and at least one date.');
 			return;
 		}
-		await createEvent({ name: event, date: JSON.stringify(date) });
-		toast('Event created ✨');
-		setDate([]);
-		setEvent('');
-		router.refresh();
+		setSaving(true);
+		try {
+			await createEvent({ name: event.trim(), date: JSON.stringify(date) });
+			toast.success('Deadline added.');
+			setDate([]);
+			setEvent('');
+			router.refresh();
+		} finally {
+			setSaving(false);
+		}
 	};
+
 	return (
-		<div>
-			<div className='p-3 border rounded-2xl max-w-sm flex flex-col items-center justify-center gap-2'>
+		<Card className='w-full max-w-sm shrink-0 gap-0 py-0 shadow-none'>
+			<CardContent className='flex flex-col gap-4 px-5 py-5'>
 				<div>
-					<Label htmlFor='event' className='py-2'>
-						Event Name
-					</Label>
+					<p className='font-semibold'>Add a deadline</p>
+					<p className='mt-1 text-sm text-muted-foreground'>
+						Name the milestone, then pick a due date. Select more than one date
+						for a submission window.
+					</p>
+				</div>
+				<div className='space-y-2'>
+					<Label htmlFor='event'>Milestone name</Label>
 					<Input
 						id='event'
 						value={event}
 						onChange={(e) => setEvent(e.target.value)}
-						placeholder='Submission of progress report'
+						placeholder='e.g. Chapter 1 submission'
 					/>
 				</div>
-				<Calendar
-					mode='multiple'
-					selected={date}
-					onSelect={setDate}
-					initialFocus
-				/>
-				{date &&
-					date.map((date, index) => (
-						<span key={index}>{date.toDateString()}</span>
-					))}
-				<Button onClick={handleCreate}>Create Event</Button>
-			</div>
-		</div>
+				<div className='flex flex-col items-center'>
+					<Calendar
+						mode='multiple'
+						selected={date}
+						onSelect={setDate}
+						initialFocus
+					/>
+				</div>
+				{date && date.length > 0 && (
+					<p className='text-xs text-muted-foreground'>
+						{date.length === 1
+							? `Due ${date[0].toDateString()}`
+							: `${date.length} dates selected`}
+					</p>
+				)}
+				<Button onClick={handleCreate} disabled={saving}>
+					{saving ? 'Saving…' : 'Add deadline'}
+				</Button>
+			</CardContent>
+		</Card>
 	);
 }

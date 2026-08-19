@@ -22,9 +22,9 @@ export default function ProjectTitleForm({
 }) {
 	const router = useRouter();
 	const [file, setFile] = React.useState<File>();
-	const [title, setTitle] = useState(project?.title?.title);
+	const [title, setTitle] = useState(project?.title?.title ?? '');
 	const [description, setDescription] = useState(
-		project?.title?.titleDescription
+		project?.title?.titleDescription ?? ''
 	);
 	const [loading, setLoading] = useState(false);
 	const { edgestore } = useEdgeStore();
@@ -67,7 +67,7 @@ export default function ProjectTitleForm({
 	};
 	return (
 		<form
-			className='p-5 border rounded-3xl grid space-y-1 mt-4'
+			className='mt-0 grid space-y-1 rounded-xl border bg-card p-5 shadow-none'
 			onSubmit={handleSubmit}
 		>
 			{loading && <Loader />}

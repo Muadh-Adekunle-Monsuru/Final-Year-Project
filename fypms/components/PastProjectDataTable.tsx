@@ -1,7 +1,6 @@
 'use client';
 
 import {
-	ColumnDef,
 	flexRender,
 	getCoreRowModel,
 	getPaginationRowModel,
@@ -11,7 +10,9 @@ import {
 	useReactTable,
 } from '@tanstack/react-table';
 
+import { getPastProjectColumns } from '@/components/PastProjectColumn';
 import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
 import {
 	Table,
 	TableBody,
@@ -20,20 +21,25 @@ import {
 	TableHeader,
 	TableRow,
 } from '@/components/ui/table';
-import { useState } from 'react';
-import { UploadBlukPastQuestions } from '@/lib/auth';
+import { PastProjects } from '@prisma/client';
+import { Search } from 'lucide-react';
+import { useMemo, useState } from 'react';
 
-interface DataTableProps<TData, TValue> {
-	columns: ColumnDef<TData, TValue>[];
-	data: TData[];
+interface DataTableProps {
+	data: PastProjects[];
+	canDelete?: boolean;
 }
 
-export function PastProjectDataTable<TData, TValue>({
-	columns,
+export function PastProjectDataTable({
 	data,
-}: DataTableProps<TData, TValue>) {
+	canDelete = false,
+}: DataTableProps) {
 	const [sorting, setSorting] = useState<SortingState>([]);
 	const [globalFilter, setGlobalFilter] = useState('');
+	const columns = useMemo(
+		() => getPastProjectColumns(canDelete),
+		[canDelete]
+	);
 
 	const table = useReactTable({
 		data,
@@ -44,11 +50,36 @@ export function PastProjectDataTable<TData, TValue>({
 		getSortedRowModel: getSortedRowModel(),
 		onSortingChange: setSorting,
 		onGlobalFilterChange: setGlobalFilter,
-		globalFilterFn: (row, columnId, filterValue) => {
-			// Search all columns (you can improve this by customizing it to specific columns)
-			return String(row.getValue(columnId))
+		globalFilterFn: (row, _columnId, filterValue) => {
+			const query = String(filterValue ?? '')
 				.toLowerCase()
-				.includes(filterValue.toLowerCase());
+				.trim();
+			if (!query) return true;
+
+			const project = row.original as {
+				title?: string;
+				authors?: string[];
+				year?: string;
+				serialNumber?: string | null;
+				supervisorNames?: string | null;
+			};
+
+			const authors = Array.isArray(project.authors)
+				? project.authors.join(' ')
+				: '';
+
+			const haystack = [
+				project.title,
+				authors,
+				project.year,
+				project.serialNumber,
+				project.supervisorNames,
+			]
+				.filter(Boolean)
+				.join(' ')
+				.toLowerCase();
+
+			return haystack.includes(query);
 		},
 		state: {
 			sorting,
@@ -57,19 +88,18 @@ export function PastProjectDataTable<TData, TValue>({
 	});
 
 	return (
-		<div className=''>
-			{/* 🔍 Search Input */}
-			<div className='mb-2'>
-				<input
-					type='text'
+		<div className='mt-8'>
+			<div className='relative mb-4 max-w-sm'>
+				<Search className='pointer-events-none absolute left-3 top-1/2 size-4 -translate-y-1/2 text-muted-foreground' />
+				<Input
+					type='search'
 					value={globalFilter ?? ''}
 					onChange={(e) => setGlobalFilter(e.target.value)}
-					placeholder='Search title...'
-					className='border border-black px-3 py-2 rounded-md w-full max-w-sm'
+					placeholder='Search by title or author...'
+					className='h-10 bg-card pl-9 shadow-sm'
 				/>
 			</div>
-			{/* <Button onClick={() => UploadBlukPastQuestions()}>Upload Bulk</Button> */}
-			<div className='rounded-md border mt-2 w-full'>
+			<div className='w-full rounded-xl border bg-card shadow-sm'>
 				<Table>
 					<TableHeader>
 						{table.getHeaderGroups().map((headerGroup) => (
@@ -95,13 +125,20 @@ export function PastProjectDataTable<TData, TValue>({
 									data-state={row.getIsSelected() && 'selected'}
 								>
 									{row.getVisibleCells().map((cell) => (
-										<TableCell key={cell.id} className=' max-w-xs'>
-											<p className=' text-balance uppercase'>
-												{flexRender(
+										<TableCell key={cell.id} className='max-w-xs'>
+											{cell.column.id === 'actions' ? (
+												flexRender(
 													cell.column.columnDef.cell,
 													cell.getContext()
-												)}
-											</p>
+												)
+											) : (
+												<p className='text-balance uppercase'>
+													{flexRender(
+														cell.column.columnDef.cell,
+														cell.getContext()
+													)}
+												</p>
+											)}
 										</TableCell>
 									))}
 								</TableRow>

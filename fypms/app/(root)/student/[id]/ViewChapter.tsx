@@ -47,39 +47,46 @@ export default function ViewChapter({
 		});
 	};
 	return (
-		<div>
+		<div className='py-3'>
 			{approving && <Loader />}
-			{chapterNumber === 0 ? (
-				'Abstract'
-			) : (
-				<h1 className='font-medium mb-1'>Chapter {chapterNumber}: </h1>
-			)}
+			<h3 className='mb-2 text-sm font-semibold'>
+				{chapterNumber === 0 ? 'Abstract' : `Chapter ${chapterNumber}`}
+			</h3>
 			<div>
 				{project.chapters.map((chapter, index) => {
 					if (chapter.chapterNumber == chapterNumber) {
 						return (
-							<div key={index} className='flex gap-3 items-center mb-1'>
-								<span className='font-light'>Uploaded on:</span>
+							<div
+								key={index}
+								className='mb-1 flex flex-wrap items-center gap-3 text-sm'
+							>
+								<span className='text-muted-foreground'>Uploaded</span>
 								<a
 									href={chapter.chapterLink}
 									target='_blank'
 									rel='noopener noreferrer'
-									className='underline flex gap-2 items-center justify-between bg-white hover:font-medium'
+									className='inline-flex items-center gap-1 font-medium text-primary hover:underline'
 								>
 									{chapter?.uploadDate?.toLocaleString()}
 									<MoveUpRight className='size-4' />
 								</a>
-								<span
+								<button
+									type='button'
+									aria-label={
+										chapter.approved ? 'Unapprove chapter' : 'Approve chapter'
+									}
 									onClick={() => {
 										approveChapterLocal(chapter.chapterId, chapter.chapterLink);
 									}}
 								>
 									<CircleCheck
 										className={`size-5 cursor-pointer rounded-full ${
-											chapter.approved ? 'bg-green-200' : 'bg-red-200'
+											chapter.approved
+												? 'bg-brand-muted text-primary'
+												: 'bg-muted text-muted-foreground'
 										}`}
 									/>
-								</span>
+								</button>
 							</div>
 						);
 					}

@@ -69,7 +69,7 @@ export default function UploadChapter({
 								</a>
 								<CircleCheck
 									className={`size-5 rounded-full ${
-										chapter.approved ? 'bg-green-200' : 'bg-red-200'
+										chapter.approved ? 'bg-brand-muted text-primary' : 'bg-red-200'
 									}`}
 								/>
 							</div>

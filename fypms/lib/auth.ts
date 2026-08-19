@@ -215,6 +215,44 @@ export async function saveAllocation(values: any) {
 	return allocation;
 }
 
+function parseAuthors(value: unknown): string[] {
+	if (Array.isArray(value)) {
+		return value.map((author) => String(author).trim()).filter(Boolean);
+	}
+	if (value == null || value === '') return [];
+	return String(value)
+		.split(/[;|]/)
+		.map((author) => author.trim())
+		.filter(Boolean);
+}
+
+export async function createPastProject(row: {
+	title?: string;
+	authors?: string | string[];
+	year?: string | number;
+	serialNumber?: string;
+	supervisorNames?: string;
+	projectDescription?: string;
+	projectLink?: string;
+}) {
+	const title = row.title?.trim();
+	const year = String(row.year ?? '').trim();
+	const authors = parseAuthors(row.authors);
+	if (!title || !year || authors.length === 0) return;
+
+	return prisma.pastProjects.create({
+		data: {
+			title,
+			year,
+			authors,
+			serialNumber: row.serialNumber?.trim() || undefined,
+			supervisorNames: row.supervisorNames?.trim() || undefined,
+			projectDescription: row.projectDescription?.trim() || undefined,
+			projectLink: row.projectLink?.trim() || undefined,
+		},
+	});
+}
+
 export async function UploadPastQuestions({ values }: { values: any }) {
 	await prisma.pastProjects.create({
 		data: values,
@@ -232,6 +270,26 @@ export async function getPastQuestions() {
 		orderBy: { year: 'desc' },
 	});
 	return res;
+}
+
+export async function deletePastProject(id: string) {
+	const { getServerSession } = await import('next-auth');
+	const { options } = await import('@/app/api/auth/[...nextauth]/options');
+	const session = await getServerSession(options);
+	if (!session?.user?.name) {
+		throw new Error('Not authorized.');
+	}
+
+	const user = await prisma.user.findFirst({
+		where: { name: session.user.name },
+		select: { role: true },
+	});
+
+	if (user?.role !== 'COORDINATOR' && user?.role !== 'SUPERVISOR') {
+		throw new Error('Not authorized.');
+	}
+
+	await prisma.pastProjects.delete({ where: { id } });
 }
 
 export async function createEvent({ name, date }) {

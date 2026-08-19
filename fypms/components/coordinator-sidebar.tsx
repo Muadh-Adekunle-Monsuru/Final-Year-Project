@@ -1,3 +1,5 @@
+'use client';
+
 import {
 	SidebarContent,
 	SidebarGroup,
@@ -16,6 +18,7 @@ import {
 	UserRound,
 } from 'lucide-react';
 import Link from 'next/link';
+import { usePathname } from 'next/navigation';
 
 const items = [
 	{
@@ -40,7 +43,7 @@ const items = [
 	},
 	{
 		title: 'Past Projects',
-		url: 'past-projects',
+		url: '/past-projects',
 		icon: FileStack,
 	},
 	{
@@ -49,7 +52,14 @@ const items = [
 		icon: Calendar1,
 	},
 ];
+
+function isActivePath(pathname: string, url: string) {
+	if (url === '/') return pathname === '/';
+	return pathname === url || pathname.startsWith(`${url}/`);
+}
+
 export default function CoordinatorSidebar() {
+	const pathname = usePathname();
 	return (
 		<SidebarContent>
 			<SidebarGroup>
@@ -58,7 +68,10 @@ export default function CoordinatorSidebar() {
 					<SidebarMenu>
 						{items.map((item) => (
 							<SidebarMenuItem key={item.title}>
-								<SidebarMenuButton asChild>
+								<SidebarMenuButton
+									asChild
+									isActive={isActivePath(pathname, item.url)}
+								>
 									<Link href={item.url}>
 										<item.icon />
 										<span className='text-sm'>{item.title}</span>

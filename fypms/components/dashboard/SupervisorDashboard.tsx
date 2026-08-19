@@ -4,6 +4,7 @@ import { Supervisor } from '../supervisor-columns';
 import { getName, getTitle } from '@/lib/auth';
 import SuperviseeStudentCard from './SuperviseeStudentCard';
 import Loader from '../Loader';
+import { Card, CardContent } from '@/components/ui/card';
 
 export default function SupervisorDashboard({
 	supervisor,
@@ -46,13 +47,27 @@ export default function SupervisorDashboard({
 	}
 
 	return (
-		<div>
-			<div>
-				<p>Number of supervisees: {supervisor.supervisees.length}</p>
-			</div>
-			{supervisor.supervisees.map((student, index) => (
-				<SuperviseeStudentCard student={supeverisees[student]} key={index} />
-			))}
+		<div className='space-y-5'>
+			<Card className='gap-0 py-0 shadow-none'>
+				<CardContent className='px-5 py-4'>
+					<p className='text-sm text-muted-foreground'>Supervisees</p>
+					<p className='text-lg font-semibold'>
+						{supervisor.supervisees.length}{' '}
+						{supervisor.supervisees.length === 1 ? 'student' : 'students'}
+					</p>
+				</CardContent>
+			</Card>
+			{supervisor.supervisees.length === 0 ? (
+				<p className='text-sm text-muted-foreground'>
+					No students have been assigned yet.
+				</p>
+			) : (
+				<div className='grid grid-cols-1 gap-4 md:grid-cols-2'>
+					{supervisor.supervisees.map((student, index) => (
+						<SuperviseeStudentCard student={supeverisees[student]} key={index} />
+					))}
+				</div>
+			)}
 		</div>
 	);
 }

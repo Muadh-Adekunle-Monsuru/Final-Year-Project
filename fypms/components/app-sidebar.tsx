@@ -12,8 +12,7 @@ export function AppSidebar() {
 		<Sidebar collapsible='icon'>
 			<SidebarHeader>
 				<Link
-					className='font-bold p-1 text-xl flex-wrap
-				 select-none truncate'
+					className='select-none truncate p-1 text-xl font-bold text-primary'
 					href={'/'}
 				>
 					FYPMS
@@ -23,7 +22,7 @@ export function AppSidebar() {
 			{(session?.user.role == 'STUDENT' ||
 				session?.user.role == 'SUPERVISOR') && <StudentSidebar />}
 			<SidebarFooter>
-				<Button variant='ghost' asChild>
+				<Button variant='ghost' className='justify-start text-muted-foreground' asChild>
 					<Link href='/api/auth/signout' className='truncate'>
 						Sign Out
 					</Link>
