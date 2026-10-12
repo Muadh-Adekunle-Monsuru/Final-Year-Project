@@ -67,6 +67,24 @@ export const pastprojectscolumns: ColumnDef<PastProjects>[] = [
 		},
 	},
 	{
+		accessorKey: 'supervisorNames',
+		header: ({ column }) => {
+			return (
+				<Button
+					variant='ghost'
+					onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
+				>
+					Supervisor(s)
+					<ArrowUpDown className='ml-2 h-4 w-4' />
+				</Button>
+			);
+		},
+		cell: ({ row }) => {
+			const names = row.original.supervisorNames?.trim();
+			return names ? names : '';
+		},
+	},
+	{
 		accessorKey: 'year',
 		header: ({ column }) => {
 			return (
