@@ -42,7 +42,7 @@ export default function GroupedAllocation({ groups }) {
 		});
 		setAllocationName('');
 		router.refresh();
-		toast.success('Allocation saved successfully!');
+		toast.success('Draft allocation saved. Activate it from Past Allocations when ready.');
 	};
 
 	return (

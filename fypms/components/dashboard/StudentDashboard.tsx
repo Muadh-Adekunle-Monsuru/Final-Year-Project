@@ -10,7 +10,7 @@ export default async function StudentDashboard({
 }: {
 	student: Student;
 }) {
-	const name = await getName(student.supervisor);
+	const name = student.supervisor ? await getName(student.supervisor) : null;
 	const project = await getTitle({ studentId: student.id });
 
 	return (
@@ -19,7 +19,7 @@ export default async function StudentDashboard({
 				<CardContent className='px-5 py-4'>
 					<p className='text-sm text-muted-foreground'>Supervisor</p>
 					<p className='font-semibold'>
-						{student.supervisor
+						{name
 							? `${name.firstName} ${name.lastName}`
 							: 'Yet to be assigned'}
 					</p>

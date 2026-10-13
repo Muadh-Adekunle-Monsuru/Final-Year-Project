@@ -87,52 +87,92 @@ export async function getSupervisors() {
 	return supervisors;
 }
 
+/** Generate a draft supervisor grouping without applying it to user records. */
 export async function allocateSupervisors() {
 	const students = await getStudents();
 	students.sort((a, b) => parseFloat(b.CGPA) - parseFloat(a.CGPA));
 	const supervisors = await getSupervisors();
 
-	// Create a copy of supervisors array that we can shuffle
-	let availableSupervisors = [...supervisors];
+	if (students.length === 0 || supervisors.length === 0) {
+		return {};
+	}
 
-	const allocatedStudents = students.map((student) => {
-		// If we've used all supervisors, reset the available list
+	let availableSupervisors = [...supervisors];
+	const groupsObj: Record<string, typeof students> = {};
+
+	for (const student of students) {
 		if (availableSupervisors.length === 0) {
 			availableSupervisors = [...supervisors];
 		}
 
-		// Pick a random supervisor from the available ones
 		const randomIndex = Math.floor(Math.random() * availableSupervisors.length);
 		const supervisor = availableSupervisors[randomIndex];
-		// Remove the selected supervisor from available list
 		availableSupervisors.splice(randomIndex, 1);
 
-		return prisma.user.update({
-			where: { id: student.id },
-			data: { supervisor: supervisor.id },
-		});
-	});
-
-	const groupsObj = {};
-	const groups = (await Promise.all(allocatedStudents)).map(
-		(student, index) => {
-			if (!groupsObj[student.supervisor]) {
-				groupsObj[student.supervisor] = [];
-			}
-			groupsObj[student.supervisor].push(students[index]);
+		if (!groupsObj[supervisor.id]) {
+			groupsObj[supervisor.id] = [];
 		}
-	);
-
-	for (const key of Object.keys(groupsObj)) {
-		const studentsId = groupsObj[key].map((student) => student.id);
-
-		await prisma.user.update({
-			where: { id: key },
-			data: { supervisees: [...studentsId] },
-		});
+		groupsObj[supervisor.id].push(student);
 	}
 
 	return groupsObj;
+}
+
+async function clearUserAllocations() {
+	await prisma.user.updateMany({
+		where: { role: 'STUDENT' },
+		data: { supervisor: null },
+	});
+	await prisma.user.updateMany({
+		where: { role: 'SUPERVISOR' },
+		data: { supervisees: [] },
+	});
+}
+
+/** Apply a saved allocation so it becomes the live assignment on portals. */
+export async function applyAllocation(allocationId: string) {
+	const allocation = await prisma.allocation.findUnique({
+		where: { id: allocationId },
+	});
+	if (!allocation) {
+		throw new Error('Allocation not found.');
+	}
+
+	const groups = JSON.parse(allocation.groups) as Record<
+		string,
+		{ id: string }[]
+	>;
+
+	await clearUserAllocations();
+
+	for (const [supervisorId, students] of Object.entries(groups)) {
+		const studentIds = students.map((student) => student.id);
+
+		await prisma.user.update({
+			where: { id: supervisorId },
+			data: { supervisees: studentIds },
+		});
+
+		await Promise.all(
+			studentIds.map((studentId) =>
+				prisma.user.update({
+					where: { id: studentId },
+					data: { supervisor: supervisorId },
+				})
+			)
+		);
+	}
+
+	await prisma.allocation.updateMany({
+		where: { isActive: true },
+		data: { isActive: false },
+	});
+	await prisma.allocation.update({
+		where: { id: allocationId },
+		data: { isActive: true },
+	});
+
+	return allocation;
 }
 
 export async function getName(id: string) {
@@ -210,6 +250,7 @@ export async function saveAllocation(values: any) {
 			name: allocationName,
 			groups,
 			supervisorNames,
+			isActive: false,
 		},
 	});
 	return allocation;
@@ -443,6 +484,12 @@ export async function approveChapter(id: string, chapterId: string) {
 }
 
 export async function deleteAllocation(id: string) {
-	const allocation = await prisma.allocation.delete({ where: { id } });
-	return allocation;
+	const allocation = await prisma.allocation.findUnique({ where: { id } });
+	if (!allocation) return;
+
+	if (allocation.isActive) {
+		await clearUserAllocations();
+	}
+
+	return prisma.allocation.delete({ where: { id } });
 }

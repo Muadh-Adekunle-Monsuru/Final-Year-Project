@@ -33,10 +33,11 @@ enum Role {
 }
 
 model Allocation {
-  id              String @id @default(auto()) @map("_id") @db.ObjectId
+  id              String  @id @default(auto()) @map("_id") @db.ObjectId
   name            String
   groups          String
   supervisorNames String
+  isActive        Boolean @default(false)
 }
 
 model PastProjects {

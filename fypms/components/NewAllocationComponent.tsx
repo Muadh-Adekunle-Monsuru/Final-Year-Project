@@ -18,7 +18,14 @@ export default function NewAllocationComponent() {
 	return (
 		<div>
 			<div className='flex items-center gap-6 p-3 justify-between border rounded-2xl'>
-				<Button onClick={handleClick}>Allocate Supervisors</Button>
+				<div className='space-y-1'>
+					<Button onClick={handleClick} disabled={generating}>
+						Allocate Supervisors
+					</Button>
+					<p className='text-sm text-muted-foreground'>
+						Creates a draft only. Save it, then choose which draft to activate.
+					</p>
+				</div>
 			</div>
 			{generating && (
 				<div className='flex flex-col items-center mx-auto justify-center gap-6 p-3  border rounded-2xl h-60 mt-5 bg-slate-50'>

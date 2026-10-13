@@ -1,12 +1,12 @@
 'use client';
 
-import { Printer } from 'lucide-react';
+import { CheckCircle2, Loader2, Printer } from 'lucide-react';
 import { Button } from './ui/button';
 import { Switch } from './ui/switch';
 import { useRef, useState } from 'react';
 import { useReactToPrint } from 'react-to-print';
 import styles from './printstyle.module.css';
-import { deleteAllocation } from '@/lib/auth';
+import { applyAllocation, deleteAllocation } from '@/lib/auth';
 import { toast } from 'sonner';
 import { useRouter } from 'next/navigation';
 
@@ -15,6 +15,7 @@ export default function AccordionAllocation({
 	groupNames,
 	allocationName,
 	allocationId,
+	isActive = false,
 }) {
 	const contentRef = useRef<HTMLDivElement>(null);
 	const reactToPrintFn = useReactToPrint({
@@ -23,10 +24,41 @@ export default function AccordionAllocation({
 	});
 
 	const [showCGPA, setShowCGPA] = useState(false);
+	const [isApplying, setIsApplying] = useState(false);
+	const [isDeleting, setIsDeleting] = useState(false);
 	const router = useRouter();
+
+	async function handleUseAllocation() {
+		if (isActive || isApplying) return;
+		setIsApplying(true);
+		try {
+			await applyAllocation(allocationId);
+			toast.success('This allocation is now active on student and supervisor portals.');
+			router.refresh();
+		} catch {
+			toast.error('Could not apply this allocation. Please try again.');
+		} finally {
+			setIsApplying(false);
+		}
+	}
+
+	async function handleDelete() {
+		if (isDeleting) return;
+		setIsDeleting(true);
+		try {
+			await deleteAllocation(allocationId);
+			toast.success('Allocation deleted successfully');
+			router.refresh();
+		} catch {
+			toast.error('Could not delete this allocation.');
+		} finally {
+			setIsDeleting(false);
+		}
+	}
+
 	return (
 		<div className='border rounded-2xl grid divide-y-2 mt-5'>
-			<div className='flex items-center justify-center p-5 gap-6'>
+			<div className='flex flex-wrap items-center justify-center p-5 gap-4'>
 				<div className=' flex items-center gap-3'>
 					<Switch checked={showCGPA} onCheckedChange={(e) => setShowCGPA(e)} />
 					<span>Show CGPA</span>
@@ -36,13 +68,37 @@ export default function AccordionAllocation({
 					Print
 				</Button>
 				<Button
-					onClick={() => {
-						deleteAllocation(allocationId);
-						toast('Allocation deleted successfully');
-						router.refresh();
-					}}
+					onClick={handleUseAllocation}
+					disabled={isActive || isApplying}
+					variant={isActive ? 'secondary' : 'default'}
 				>
-					Delete Allocation
+					{isApplying ? (
+						<>
+							<Loader2 className='animate-spin' />
+							Applying…
+						</>
+					) : isActive ? (
+						<>
+							<CheckCircle2 />
+							Currently in use
+						</>
+					) : (
+						'Use this as allocation'
+					)}
+				</Button>
+				<Button
+					variant='destructive'
+					onClick={handleDelete}
+					disabled={isDeleting || isApplying}
+				>
+					{isDeleting ? (
+						<>
+							<Loader2 className='animate-spin' />
+							Deleting…
+						</>
+					) : (
+						'Delete Allocation'
+					)}
 				</Button>
 			</div>
 			<div ref={contentRef} className={styles.container}>

@@ -11,13 +11,27 @@ export default async function Page() {
 	if (user.role !== 'COORDINATOR') {
 		redirect('/');
 	}
-	const pastAllocations = await prisma.allocation.findMany({});
+	const pastAllocations = await prisma.allocation.findMany({
+		orderBy: { isActive: 'desc' },
+	});
+	const activeAllocation = pastAllocations.find((allocation) => allocation.isActive);
+
 	return (
 		<div className='min-h-screen p-8 pb-20 font-[family-name:var(--font-geist-sans)] w-full'>
 			<h1 className='text-4xl font-bold'>Allocate Supervisors</h1>
 			<p className='text-lg'>
-				This is where students are allocated a supervisor.
+				Generate and save draft allocations. Use &quot;Use this as allocation&quot;
+				on a saved draft to make it live on student and supervisor portals.
 			</p>
+			{activeAllocation ? (
+				<p className='mt-2 text-sm text-muted-foreground'>
+					Currently active: <span className='font-medium text-foreground'>{activeAllocation.name}</span>
+				</p>
+			) : (
+				<p className='mt-2 text-sm text-muted-foreground'>
+					No allocation is currently active on the portals.
+				</p>
+			)}
 			<NewAllocationComponent />
 			<p className='font-bold mt-10 pl-6'>Past Allocations</p>
 			<AccorditionComponent allocations={pastAllocations} />

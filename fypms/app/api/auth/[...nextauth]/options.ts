@@ -45,7 +45,8 @@ export const options: NextAuthOptions = {
 		}),
 	],
 	pages: {
-		signIn: '/auth/signin', // Custom login page
+		signIn: '/auth/signin',
+		error: '/auth/signin',
 	},
 	callbacks: {
 		jwt({ token, user }) {

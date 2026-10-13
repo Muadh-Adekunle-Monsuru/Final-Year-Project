@@ -18,13 +18,23 @@ export default function AccorditionComponent({
 			<Accordion type='single' collapsible>
 				{allocations.map((allocation) => (
 					<AccordionItem value={allocation.id} key={allocation.id}>
-						<AccordionTrigger>{allocation.name}</AccordionTrigger>
+						<AccordionTrigger>
+							<span className='flex items-center gap-3'>
+								{allocation.name}
+								{allocation.isActive ? (
+									<span className='rounded-full bg-primary/10 px-2.5 py-0.5 text-xs font-medium text-primary'>
+										Active
+									</span>
+								) : null}
+							</span>
+						</AccordionTrigger>
 						<AccordionContent>
 							<AccordionAllocation
 								allocationId={allocation.id}
 								groupNames={JSON.parse(allocation.supervisorNames)}
 								groups={JSON.parse(allocation.groups)}
 								allocationName={allocation.name}
+								isActive={Boolean(allocation.isActive)}
 							/>
 						</AccordionContent>
 					</AccordionItem>
